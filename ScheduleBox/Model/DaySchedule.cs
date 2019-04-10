@@ -1,20 +1,16 @@
 namespace ScheduleBox.Model
 {
-    using System;
     using System.Collections.Generic;
 
     public class DaySchedule
     {
-        public DaySchedule(string name, Guid id, IReadOnlyList<Activity> activities)
+        public DaySchedule(Person person, IReadOnlyList<Activity> activities)
         {
-            this.Name = name;
-            this.Id = id;
+            this.Person = person;
             this.Activities = activities;
         }
 
-        public string Name { get; }
-
-        public Guid Id { get; }
+        public Person Person { get; }
 
         public IReadOnlyList<Activity> Activities { get; }
     }
