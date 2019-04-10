@@ -1,3 +1,4 @@
 <p>Schedule</p>
-<div>{{json}}</div>
+<input type="date" [ngModel] ="date | date:'yyyy-MM-dd'" (ngModelChange)="date = $event" >
 <div>{{date}}</div>
+<div>{{json}}</div>

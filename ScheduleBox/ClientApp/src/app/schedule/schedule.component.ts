@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -9,28 +9,36 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ScheduleComponent implements OnInit, OnDestroy {
   json = 'Empty';
-  date = new Date();
+  private _date = new Date();
   private dateSub: any;
-  private jsonSub: any;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private http: HttpClient,
   ) { }
 
+  
+  public get date() : Date {
+    return this._date;
+  }
+    
+  public set date(v : Date) {
+    // if passed as string from the input
+    v = new Date(v);
+    this._date = v;
+    const isoDate = v.toISOString().substring(0, 10);
+    this.router.navigate([`/${isoDate}`]);
+    this.json = '';
+    this.http.get<string>(`${document.getElementsByTagName('base')[0].href}api/schedules/${isoDate}`)
+             .subscribe(x => this.json = JSON.stringify(x));
+  }
+  
   ngOnInit(): void {
-    let dateString;
-    this.dateSub = this.route.paramMap.subscribe(x => {
-          this.date = new Date(x.get('date'));
-          dateString = x.get('date');
-         }
-       );
-    this.jsonSub = this.http.get<string>(document.getElementsByTagName('base')[0].href + 'api/schedules/' + dateString)
-                        .subscribe(x => this.json = JSON.stringify(x));
+    this.dateSub = this.route.paramMap.subscribe(x => this.date = new Date(x.get('date')));
   }
 
   ngOnDestroy() {
     this.dateSub.unsubscribe();
-    this.jsonSub.unsubscribe();
   }
 }
