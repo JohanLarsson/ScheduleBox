@@ -4,7 +4,7 @@ namespace ScheduleBox.Model
 
     public class Activity
     {
-        public Activity(string description, string color, DateTime start, DateTime end)
+        public Activity(string description, string color, DateTimeOffset start, DateTimeOffset end)
         {
             this.Description = description;
             this.Start = start;
@@ -16,8 +16,8 @@ namespace ScheduleBox.Model
 
         public string Color { get; }
 
-        public DateTime Start { get; }
+        public DateTimeOffset Start { get; }
 
-        public DateTime End { get; }
+        public DateTimeOffset End { get; }
     }
 }

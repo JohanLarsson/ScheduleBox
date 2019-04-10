@@ -5,13 +5,16 @@ namespace ScheduleBox.Model
 
     public class DaySchedule
     {
-        public DaySchedule(string name, IReadOnlyList<Activity> activities, DateTime starTime, DateTime endTime)
+        public DaySchedule(string name, Guid id, IReadOnlyList<Activity> activities)
         {
             this.Name = name;
+            this.Id = id;
             this.Activities = activities;
         }
 
         public string Name { get; }
+
+        public Guid Id { get; }
 
         public IReadOnlyList<Activity> Activities { get; }
     }
