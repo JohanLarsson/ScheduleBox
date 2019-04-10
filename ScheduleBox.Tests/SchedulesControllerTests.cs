@@ -6,6 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
     using NUnit.Framework;
     using ScheduleBox.Controllers;
     using ScheduleBox.Model.PizzaCabinApiResponse;
@@ -62,21 +63,1145 @@
             var controller = new SchedulesController(new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler)));
 
             var actionResult = await controller.Get(new DateTime(2015, 12, 14));
-
-            Assert.AreEqual(10, actionResult.Value.Schedules.Count);
-
-            var schedule = actionResult.Value.Schedules[0];
-            Assert.AreEqual("Daniel Billsus", schedule.Person.Name);
-            Assert.AreEqual(Guid.Parse("4fd900ad-2b33-469c-87ac-9b5e015b2564"), schedule.Person.Id);
-            Assert.AreEqual(7, schedule.Activities.Count);
-
-            var activity = schedule.Activities[0];
-            Assert.AreEqual("Social Media", activity.Description);
-            Assert.AreEqual("#1E90FF", activity.Color);
-            Assert.AreEqual(new DateTimeOffset(2015, 12, 14, 8, 0, 0, TimeSpan.Zero), activity.Start);
-            Assert.AreEqual(new DateTimeOffset(2015, 12, 14, 10, 0, 0, TimeSpan.Zero), activity.End);
-
-            Assert.AreEqual(32, actionResult.Value.TimeSlots.Count);
+            var expected = @"{
+  ""TimeSlots"": [
+    {
+      ""Start"": ""2015-12-14T08:00:00+00:00"",
+      ""End"": ""2015-12-14T08:15:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Michael Kantor"",
+          ""Id"": ""d56e32cc-2e46-4ba2-9fc1-9b5e015b2572""
+        },
+        {
+          ""Name"": ""Bill Gates"",
+          ""Id"": ""826f2a46-93bb-4b04-8d5e-9b5e015b2577""
+        },
+        {
+          ""Name"": ""Candy Mamer"",
+          ""Id"": ""2856c6cf-5c6a-4379-8c52-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Tim McMahon"",
+          ""Id"": ""3833e4a7-dbf4-4130-9027-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T08:15:00+00:00"",
+      ""End"": ""2015-12-14T08:30:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Michael Kantor"",
+          ""Id"": ""d56e32cc-2e46-4ba2-9fc1-9b5e015b2572""
+        },
+        {
+          ""Name"": ""Bill Gates"",
+          ""Id"": ""826f2a46-93bb-4b04-8d5e-9b5e015b2577""
+        },
+        {
+          ""Name"": ""Candy Mamer"",
+          ""Id"": ""2856c6cf-5c6a-4379-8c52-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Tim McMahon"",
+          ""Id"": ""3833e4a7-dbf4-4130-9027-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T08:30:00+00:00"",
+      ""End"": ""2015-12-14T08:45:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Michael Kantor"",
+          ""Id"": ""d56e32cc-2e46-4ba2-9fc1-9b5e015b2572""
+        },
+        {
+          ""Name"": ""Bill Gates"",
+          ""Id"": ""826f2a46-93bb-4b04-8d5e-9b5e015b2577""
+        },
+        {
+          ""Name"": ""Candy Mamer"",
+          ""Id"": ""2856c6cf-5c6a-4379-8c52-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Tim McMahon"",
+          ""Id"": ""3833e4a7-dbf4-4130-9027-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T08:45:00+00:00"",
+      ""End"": ""2015-12-14T09:00:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Michael Kantor"",
+          ""Id"": ""d56e32cc-2e46-4ba2-9fc1-9b5e015b2572""
+        },
+        {
+          ""Name"": ""Bill Gates"",
+          ""Id"": ""826f2a46-93bb-4b04-8d5e-9b5e015b2577""
+        },
+        {
+          ""Name"": ""Candy Mamer"",
+          ""Id"": ""2856c6cf-5c6a-4379-8c52-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Tim McMahon"",
+          ""Id"": ""3833e4a7-dbf4-4130-9027-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T09:00:00+00:00"",
+      ""End"": ""2015-12-14T09:15:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Michael Kantor"",
+          ""Id"": ""d56e32cc-2e46-4ba2-9fc1-9b5e015b2572""
+        },
+        {
+          ""Name"": ""Bill Gates"",
+          ""Id"": ""826f2a46-93bb-4b04-8d5e-9b5e015b2577""
+        },
+        {
+          ""Name"": ""Candy Mamer"",
+          ""Id"": ""2856c6cf-5c6a-4379-8c52-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Tim McMahon"",
+          ""Id"": ""3833e4a7-dbf4-4130-9027-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T09:15:00+00:00"",
+      ""End"": ""2015-12-14T09:30:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Michael Kantor"",
+          ""Id"": ""d56e32cc-2e46-4ba2-9fc1-9b5e015b2572""
+        },
+        {
+          ""Name"": ""Bill Gates"",
+          ""Id"": ""826f2a46-93bb-4b04-8d5e-9b5e015b2577""
+        },
+        {
+          ""Name"": ""Candy Mamer"",
+          ""Id"": ""2856c6cf-5c6a-4379-8c52-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Tim McMahon"",
+          ""Id"": ""3833e4a7-dbf4-4130-9027-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T09:30:00+00:00"",
+      ""End"": ""2015-12-14T09:45:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Michael Kantor"",
+          ""Id"": ""d56e32cc-2e46-4ba2-9fc1-9b5e015b2572""
+        },
+        {
+          ""Name"": ""Bill Gates"",
+          ""Id"": ""826f2a46-93bb-4b04-8d5e-9b5e015b2577""
+        },
+        {
+          ""Name"": ""Candy Mamer"",
+          ""Id"": ""2856c6cf-5c6a-4379-8c52-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Tim McMahon"",
+          ""Id"": ""3833e4a7-dbf4-4130-9027-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T09:45:00+00:00"",
+      ""End"": ""2015-12-14T10:00:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Michael Kantor"",
+          ""Id"": ""d56e32cc-2e46-4ba2-9fc1-9b5e015b2572""
+        },
+        {
+          ""Name"": ""Bill Gates"",
+          ""Id"": ""826f2a46-93bb-4b04-8d5e-9b5e015b2577""
+        },
+        {
+          ""Name"": ""Candy Mamer"",
+          ""Id"": ""2856c6cf-5c6a-4379-8c52-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Tim McMahon"",
+          ""Id"": ""3833e4a7-dbf4-4130-9027-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T10:00:00+00:00"",
+      ""End"": ""2015-12-14T10:15:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Daniel Billsus"",
+          ""Id"": ""4fd900ad-2b33-469c-87ac-9b5e015b2564""
+        },
+        {
+          ""Name"": ""Michael Kantor"",
+          ""Id"": ""d56e32cc-2e46-4ba2-9fc1-9b5e015b2572""
+        },
+        {
+          ""Name"": ""Bill Gates"",
+          ""Id"": ""826f2a46-93bb-4b04-8d5e-9b5e015b2577""
+        },
+        {
+          ""Name"": ""Candy Mamer"",
+          ""Id"": ""2856c6cf-5c6a-4379-8c52-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Tim McMahon"",
+          ""Id"": ""3833e4a7-dbf4-4130-9027-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""George Lueker"",
+          ""Id"": ""71d27b06-30c0-49fd-ae16-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        },
+        {
+          ""Name"": ""Kari Nies"",
+          ""Id"": ""d1a6cf64-ecce-4b8a-ab03-9b5e015b2585""
+        },
+        {
+          ""Name"": ""Carlos Oliveira"",
+          ""Id"": ""e60babbe-29f1-4b61-bba2-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T10:15:00+00:00"",
+      ""End"": ""2015-12-14T10:30:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Michael Kantor"",
+          ""Id"": ""d56e32cc-2e46-4ba2-9fc1-9b5e015b2572""
+        },
+        {
+          ""Name"": ""Bill Gates"",
+          ""Id"": ""826f2a46-93bb-4b04-8d5e-9b5e015b2577""
+        },
+        {
+          ""Name"": ""Candy Mamer"",
+          ""Id"": ""2856c6cf-5c6a-4379-8c52-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Tim McMahon"",
+          ""Id"": ""3833e4a7-dbf4-4130-9027-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T10:30:00+00:00"",
+      ""End"": ""2015-12-14T10:45:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Michael Kantor"",
+          ""Id"": ""d56e32cc-2e46-4ba2-9fc1-9b5e015b2572""
+        },
+        {
+          ""Name"": ""Bill Gates"",
+          ""Id"": ""826f2a46-93bb-4b04-8d5e-9b5e015b2577""
+        },
+        {
+          ""Name"": ""Candy Mamer"",
+          ""Id"": ""2856c6cf-5c6a-4379-8c52-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Tim McMahon"",
+          ""Id"": ""3833e4a7-dbf4-4130-9027-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T10:45:00+00:00"",
+      ""End"": ""2015-12-14T11:00:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Michael Kantor"",
+          ""Id"": ""d56e32cc-2e46-4ba2-9fc1-9b5e015b2572""
+        },
+        {
+          ""Name"": ""Bill Gates"",
+          ""Id"": ""826f2a46-93bb-4b04-8d5e-9b5e015b2577""
+        },
+        {
+          ""Name"": ""Candy Mamer"",
+          ""Id"": ""2856c6cf-5c6a-4379-8c52-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Tim McMahon"",
+          ""Id"": ""3833e4a7-dbf4-4130-9027-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T11:00:00+00:00"",
+      ""End"": ""2015-12-14T11:15:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T11:15:00+00:00"",
+      ""End"": ""2015-12-14T11:30:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T11:30:00+00:00"",
+      ""End"": ""2015-12-14T11:45:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T11:45:00+00:00"",
+      ""End"": ""2015-12-14T12:00:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T12:00:00+00:00"",
+      ""End"": ""2015-12-14T12:15:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T12:15:00+00:00"",
+      ""End"": ""2015-12-14T12:30:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T12:30:00+00:00"",
+      ""End"": ""2015-12-14T12:45:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T12:45:00+00:00"",
+      ""End"": ""2015-12-14T13:00:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T13:00:00+00:00"",
+      ""End"": ""2015-12-14T13:15:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T13:15:00+00:00"",
+      ""End"": ""2015-12-14T13:30:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T13:30:00+00:00"",
+      ""End"": ""2015-12-14T13:45:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Michael Kantor"",
+          ""Id"": ""d56e32cc-2e46-4ba2-9fc1-9b5e015b2572""
+        },
+        {
+          ""Name"": ""Bill Gates"",
+          ""Id"": ""826f2a46-93bb-4b04-8d5e-9b5e015b2577""
+        },
+        {
+          ""Name"": ""Candy Mamer"",
+          ""Id"": ""2856c6cf-5c6a-4379-8c52-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Tim McMahon"",
+          ""Id"": ""3833e4a7-dbf4-4130-9027-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T13:45:00+00:00"",
+      ""End"": ""2015-12-14T14:00:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T14:00:00+00:00"",
+      ""End"": ""2015-12-14T14:15:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T14:15:00+00:00"",
+      ""End"": ""2015-12-14T14:30:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T14:30:00+00:00"",
+      ""End"": ""2015-12-14T14:45:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T14:45:00+00:00"",
+      ""End"": ""2015-12-14T15:00:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T15:00:00+00:00"",
+      ""End"": ""2015-12-14T15:15:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Daniel Billsus"",
+          ""Id"": ""4fd900ad-2b33-469c-87ac-9b5e015b2564""
+        },
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""George Lueker"",
+          ""Id"": ""71d27b06-30c0-49fd-ae16-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        },
+        {
+          ""Name"": ""Kari Nies"",
+          ""Id"": ""d1a6cf64-ecce-4b8a-ab03-9b5e015b2585""
+        },
+        {
+          ""Name"": ""Carlos Oliveira"",
+          ""Id"": ""e60babbe-29f1-4b61-bba2-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T15:15:00+00:00"",
+      ""End"": ""2015-12-14T15:30:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T15:30:00+00:00"",
+      ""End"": ""2015-12-14T15:45:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    },
+    {
+      ""Start"": ""2015-12-14T15:45:00+00:00"",
+      ""End"": ""2015-12-14T16:00:00+00:00"",
+      ""Attendees"": [
+        {
+          ""Name"": ""Sharad Mehrotra"",
+          ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+        },
+        {
+          ""Name"": ""Steve Novack"",
+          ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+        }
+      ]
+    }
+  ],
+  ""Schedules"": [
+    {
+      ""Person"": {
+        ""Name"": ""Daniel Billsus"",
+        ""Id"": ""4fd900ad-2b33-469c-87ac-9b5e015b2564""
+      },
+      ""Activities"": [
+        {
+          ""Description"": ""Social Media"",
+          ""Color"": ""#1E90FF"",
+          ""Start"": ""2015-12-14T08:00:00+00:00"",
+          ""End"": ""2015-12-14T10:00:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T10:00:00+00:00"",
+          ""End"": ""2015-12-14T10:15:00+00:00""
+        },
+        {
+          ""Description"": ""Social Media"",
+          ""Color"": ""#1E90FF"",
+          ""Start"": ""2015-12-14T10:15:00+00:00"",
+          ""End"": ""2015-12-14T12:00:00+00:00""
+        },
+        {
+          ""Description"": ""Lunch"",
+          ""Color"": ""#FFFF00"",
+          ""Start"": ""2015-12-14T12:00:00+00:00"",
+          ""End"": ""2015-12-14T13:00:00+00:00""
+        },
+        {
+          ""Description"": ""Social Media"",
+          ""Color"": ""#1E90FF"",
+          ""Start"": ""2015-12-14T13:00:00+00:00"",
+          ""End"": ""2015-12-14T15:00:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T15:00:00+00:00"",
+          ""End"": ""2015-12-14T15:15:00+00:00""
+        },
+        {
+          ""Description"": ""Social Media"",
+          ""Color"": ""#1E90FF"",
+          ""Start"": ""2015-12-14T15:15:00+00:00"",
+          ""End"": ""2015-12-14T17:00:00+00:00""
+        }
+      ]
+    },
+    {
+      ""Person"": {
+        ""Name"": ""Michael Kantor"",
+        ""Id"": ""d56e32cc-2e46-4ba2-9fc1-9b5e015b2572""
+      },
+      ""Activities"": [
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T11:00:00+00:00"",
+          ""End"": ""2015-12-14T13:30:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T13:30:00+00:00"",
+          ""End"": ""2015-12-14T13:45:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T13:45:00+00:00"",
+          ""End"": ""2015-12-14T15:00:00+00:00""
+        },
+        {
+          ""Description"": ""Lunch"",
+          ""Color"": ""#FFFF00"",
+          ""Start"": ""2015-12-14T15:00:00+00:00"",
+          ""End"": ""2015-12-14T16:00:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T16:00:00+00:00"",
+          ""End"": ""2015-12-14T17:30:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T17:30:00+00:00"",
+          ""End"": ""2015-12-14T17:45:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T17:45:00+00:00"",
+          ""End"": ""2015-12-14T19:00:00+00:00""
+        },
+        {
+          ""Description"": ""Chat"",
+          ""Color"": ""#FFC080"",
+          ""Start"": ""2015-12-14T19:00:00+00:00"",
+          ""End"": ""2015-12-14T20:00:00+00:00""
+        }
+      ]
+    },
+    {
+      ""Person"": {
+        ""Name"": ""Bill Gates"",
+        ""Id"": ""826f2a46-93bb-4b04-8d5e-9b5e015b2577""
+      },
+      ""Activities"": [
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T11:00:00+00:00"",
+          ""End"": ""2015-12-14T13:30:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T13:30:00+00:00"",
+          ""End"": ""2015-12-14T13:45:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T13:45:00+00:00"",
+          ""End"": ""2015-12-14T15:00:00+00:00""
+        },
+        {
+          ""Description"": ""Lunch"",
+          ""Color"": ""#FFFF00"",
+          ""Start"": ""2015-12-14T15:00:00+00:00"",
+          ""End"": ""2015-12-14T16:00:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T16:00:00+00:00"",
+          ""End"": ""2015-12-14T17:30:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T17:30:00+00:00"",
+          ""End"": ""2015-12-14T17:45:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T17:45:00+00:00"",
+          ""End"": ""2015-12-14T19:00:00+00:00""
+        },
+        {
+          ""Description"": ""Chat"",
+          ""Color"": ""#FFC080"",
+          ""Start"": ""2015-12-14T19:00:00+00:00"",
+          ""End"": ""2015-12-14T20:00:00+00:00""
+        }
+      ]
+    },
+    {
+      ""Person"": {
+        ""Name"": ""Candy Mamer"",
+        ""Id"": ""2856c6cf-5c6a-4379-8c52-9b5e015b2580""
+      },
+      ""Activities"": [
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T11:00:00+00:00"",
+          ""End"": ""2015-12-14T13:30:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T13:30:00+00:00"",
+          ""End"": ""2015-12-14T13:45:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T13:45:00+00:00"",
+          ""End"": ""2015-12-14T15:00:00+00:00""
+        },
+        {
+          ""Description"": ""Lunch"",
+          ""Color"": ""#FFFF00"",
+          ""Start"": ""2015-12-14T15:00:00+00:00"",
+          ""End"": ""2015-12-14T16:00:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T16:00:00+00:00"",
+          ""End"": ""2015-12-14T17:30:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T17:30:00+00:00"",
+          ""End"": ""2015-12-14T17:45:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T17:45:00+00:00"",
+          ""End"": ""2015-12-14T19:00:00+00:00""
+        },
+        {
+          ""Description"": ""Chat"",
+          ""Color"": ""#FFC080"",
+          ""Start"": ""2015-12-14T19:00:00+00:00"",
+          ""End"": ""2015-12-14T20:00:00+00:00""
+        }
+      ]
+    },
+    {
+      ""Person"": {
+        ""Name"": ""Tim McMahon"",
+        ""Id"": ""3833e4a7-dbf4-4130-9027-9b5e015b2580""
+      },
+      ""Activities"": [
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T11:00:00+00:00"",
+          ""End"": ""2015-12-14T13:30:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T13:30:00+00:00"",
+          ""End"": ""2015-12-14T13:45:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T13:45:00+00:00"",
+          ""End"": ""2015-12-14T15:00:00+00:00""
+        },
+        {
+          ""Description"": ""Lunch"",
+          ""Color"": ""#FFFF00"",
+          ""Start"": ""2015-12-14T15:00:00+00:00"",
+          ""End"": ""2015-12-14T16:00:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T16:00:00+00:00"",
+          ""End"": ""2015-12-14T17:30:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T17:30:00+00:00"",
+          ""End"": ""2015-12-14T17:45:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T17:45:00+00:00"",
+          ""End"": ""2015-12-14T19:00:00+00:00""
+        },
+        {
+          ""Description"": ""Chat"",
+          ""Color"": ""#FFC080"",
+          ""Start"": ""2015-12-14T19:00:00+00:00"",
+          ""End"": ""2015-12-14T20:00:00+00:00""
+        }
+      ]
+    },
+    {
+      ""Person"": {
+        ""Name"": ""Sharad Mehrotra"",
+        ""Id"": ""637ab62a-a0c1-49f3-a475-9b5e015b2580""
+      },
+      ""Activities"": []
+    },
+    {
+      ""Person"": {
+        ""Name"": ""George Lueker"",
+        ""Id"": ""71d27b06-30c0-49fd-ae16-9b5e015b2580""
+      },
+      ""Activities"": [
+        {
+          ""Description"": ""Social Media"",
+          ""Color"": ""#1E90FF"",
+          ""Start"": ""2015-12-14T08:00:00+00:00"",
+          ""End"": ""2015-12-14T10:00:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T10:00:00+00:00"",
+          ""End"": ""2015-12-14T10:15:00+00:00""
+        },
+        {
+          ""Description"": ""Social Media"",
+          ""Color"": ""#1E90FF"",
+          ""Start"": ""2015-12-14T10:15:00+00:00"",
+          ""End"": ""2015-12-14T12:00:00+00:00""
+        },
+        {
+          ""Description"": ""Lunch"",
+          ""Color"": ""#FFFF00"",
+          ""Start"": ""2015-12-14T12:00:00+00:00"",
+          ""End"": ""2015-12-14T13:00:00+00:00""
+        },
+        {
+          ""Description"": ""Social Media"",
+          ""Color"": ""#1E90FF"",
+          ""Start"": ""2015-12-14T13:00:00+00:00"",
+          ""End"": ""2015-12-14T15:00:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T15:00:00+00:00"",
+          ""End"": ""2015-12-14T15:15:00+00:00""
+        },
+        {
+          ""Description"": ""Social Media"",
+          ""Color"": ""#1E90FF"",
+          ""Start"": ""2015-12-14T15:15:00+00:00"",
+          ""End"": ""2015-12-14T17:00:00+00:00""
+        }
+      ]
+    },
+    {
+      ""Person"": {
+        ""Name"": ""Steve Novack"",
+        ""Id"": ""1a714f36-ee87-4a06-88d6-9b5e015b2585""
+      },
+      ""Activities"": []
+    },
+    {
+      ""Person"": {
+        ""Name"": ""Kari Nies"",
+        ""Id"": ""d1a6cf64-ecce-4b8a-ab03-9b5e015b2585""
+      },
+      ""Activities"": [
+        {
+          ""Description"": ""Social Media"",
+          ""Color"": ""#1E90FF"",
+          ""Start"": ""2015-12-14T08:00:00+00:00"",
+          ""End"": ""2015-12-14T10:00:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T10:00:00+00:00"",
+          ""End"": ""2015-12-14T10:15:00+00:00""
+        },
+        {
+          ""Description"": ""Social Media"",
+          ""Color"": ""#1E90FF"",
+          ""Start"": ""2015-12-14T10:15:00+00:00"",
+          ""End"": ""2015-12-14T12:00:00+00:00""
+        },
+        {
+          ""Description"": ""Lunch"",
+          ""Color"": ""#FFFF00"",
+          ""Start"": ""2015-12-14T12:00:00+00:00"",
+          ""End"": ""2015-12-14T13:00:00+00:00""
+        },
+        {
+          ""Description"": ""Social Media"",
+          ""Color"": ""#1E90FF"",
+          ""Start"": ""2015-12-14T13:00:00+00:00"",
+          ""End"": ""2015-12-14T15:00:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T15:00:00+00:00"",
+          ""End"": ""2015-12-14T15:15:00+00:00""
+        },
+        {
+          ""Description"": ""Social Media"",
+          ""Color"": ""#1E90FF"",
+          ""Start"": ""2015-12-14T15:15:00+00:00"",
+          ""End"": ""2015-12-14T17:00:00+00:00""
+        }
+      ]
+    },
+    {
+      ""Person"": {
+        ""Name"": ""Carlos Oliveira"",
+        ""Id"": ""e60babbe-29f1-4b61-bba2-9b5e015b2585""
+      },
+      ""Activities"": [
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T08:00:00+00:00"",
+          ""End"": ""2015-12-14T10:00:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T10:00:00+00:00"",
+          ""End"": ""2015-12-14T10:15:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T10:15:00+00:00"",
+          ""End"": ""2015-12-14T12:00:00+00:00""
+        },
+        {
+          ""Description"": ""Lunch"",
+          ""Color"": ""#FFFF00"",
+          ""Start"": ""2015-12-14T12:00:00+00:00"",
+          ""End"": ""2015-12-14T13:00:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T13:00:00+00:00"",
+          ""End"": ""2015-12-14T15:00:00+00:00""
+        },
+        {
+          ""Description"": ""Short break"",
+          ""Color"": ""#FF0000"",
+          ""Start"": ""2015-12-14T15:00:00+00:00"",
+          ""End"": ""2015-12-14T15:15:00+00:00""
+        },
+        {
+          ""Description"": ""Phone"",
+          ""Color"": ""#80FF80"",
+          ""Start"": ""2015-12-14T15:15:00+00:00"",
+          ""End"": ""2015-12-14T16:00:00+00:00""
+        },
+        {
+          ""Description"": ""Social Media"",
+          ""Color"": ""#1E90FF"",
+          ""Start"": ""2015-12-14T16:00:00+00:00"",
+          ""End"": ""2015-12-14T17:00:00+00:00""
+        }
+      ]
+    }
+  ]
+}";
+            Assert.AreEqual(expected, JsonConvert.SerializeObject(actionResult.Value, Formatting.Indented));
         }
     }
 }
