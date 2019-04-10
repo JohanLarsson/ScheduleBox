@@ -5,10 +5,12 @@
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc;
     using NUnit.Framework;
+    using ScheduleBox.Controllers;
     using ScheduleBox.Model.PizzaCabinApiResponse;
 
-    public class PizzaCabinClientTests
+    public class SchedulesControllerTests
     {
         [Test]
         public async Task CallsPizzaCabinWithCorrectUri()
@@ -21,9 +23,9 @@
                         Encoding.UTF8,
                         "application/json"),
                 });
-            var client = new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler));
+            var controller = new SchedulesController(new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler)));
 
-            _ = await client.GetSchedulesAsync(new DateTime(2015, 12, 14));
+            _ = await controller.Get(new DateTime(2015, 12, 14));
             Assert.AreEqual("http://pizzacabininc.azurewebsites.net/PizzaCabinInc.svc/schedule/2015-12-14", fakeHttpMessageHandler.Request.RequestUri.AbsoluteUri);
         }
 
@@ -38,10 +40,12 @@
                         Encoding.UTF8,
                         "application/json"),
                 });
-            var client = new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler));
+            var controller = new SchedulesController(new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler)));
 
-            var schedules = await client.GetSchedulesAsync(new DateTimeOffset(2015, 12, 14, 0, 0, 0, TimeSpan.Zero));
-            Assert.AreEqual(0, schedules.Count);
+            var actionResult = await controller.Get(new DateTime(2015, 12, 14));
+            Assert.IsInstanceOf<NotFoundObjectResult>(actionResult.Result);
+            var notFound = (NotFoundObjectResult)actionResult.Result;
+            Assert.AreEqual("No schedules found for selected date. Please try again.", notFound.Value);
         }
 
         [Test]
@@ -55,12 +59,13 @@
                         Encoding.UTF8,
                         "application/json"),
                 });
-            var client = new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler));
+            var controller = new SchedulesController(new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler)));
 
-            var schedules = await client.GetSchedulesAsync(new DateTimeOffset(2015, 12, 14, 0, 0, 0, TimeSpan.Zero));
-            Assert.AreEqual(10, schedules.Count);
+            var actionResult = await controller.Get(new DateTime(2015, 12, 14));
 
-            var schedule = schedules[0];
+            Assert.AreEqual(10, actionResult.Value.Schedules.Count);
+
+            var schedule = actionResult.Value.Schedules[0];
             Assert.AreEqual("Daniel Billsus", schedule.Person.Name);
             Assert.AreEqual(Guid.Parse("4fd900ad-2b33-469c-87ac-9b5e015b2564"), schedule.Person.Id);
             Assert.AreEqual(7, schedule.Activities.Count);
@@ -70,6 +75,8 @@
             Assert.AreEqual("#1E90FF", activity.Color);
             Assert.AreEqual(new DateTimeOffset(2015, 12, 14, 8, 0, 0, TimeSpan.Zero), activity.Start);
             Assert.AreEqual(new DateTimeOffset(2015, 12, 14, 10, 0, 0, TimeSpan.Zero), activity.End);
+
+            Assert.AreEqual(32, actionResult.Value.TimeSlots.Count);
         }
     }
 }

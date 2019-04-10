@@ -19,5 +19,8 @@ namespace ScheduleBox.Model
         public DateTimeOffset Start { get; }
 
         public DateTimeOffset End { get; }
+
+        public bool Overlaps(DateTimeOffset time) => this.Start < time &&
+                                                     this.End > time;
     }
 }
