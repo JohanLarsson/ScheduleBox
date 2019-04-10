@@ -6,6 +6,7 @@ namespace ScheduleBox
     using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.OpenApi.Models;
     using ScheduleBox.Model.PizzaCabinApiResponse;
 
     public class Startup
@@ -29,6 +30,7 @@ namespace ScheduleBox
             });
 
             services.AddHttpClient<PizzaCabinClient>();
+            services.AddSwaggerGen(x => x.SwaggerDoc("v0", new OpenApiInfo { Title = "ScheduleBox", Version = "v0" }));
             services.AddCors();
         }
 
@@ -45,6 +47,8 @@ namespace ScheduleBox
             }
 
             app.UseCors(x => x.AllowAnyOrigin())
+               .UseSwagger()
+               .UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v0/swagger.json", "ScheduleBox v0"))
                .UseStaticFiles()
                .UseSpaStaticFiles();
 
