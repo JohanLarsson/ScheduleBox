@@ -29,6 +29,7 @@ namespace ScheduleBox
             });
 
             services.AddHttpClient<PizzaCabinClient>();
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,8 +44,9 @@ namespace ScheduleBox
                 app.UseExceptionHandler("/Error");
             }
 
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
+            app.UseCors(x => x.AllowAnyOrigin())
+               .UseStaticFiles()
+               .UseSpaStaticFiles();
 
             app.UseMvc(routes =>
             {
