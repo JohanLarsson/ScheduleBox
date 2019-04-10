@@ -4,7 +4,7 @@ namespace ScheduleBox.Model.PizzaCabinApiResponse
 
     public class Projection
     {
-        public Projection(string color, string description, DateTime start, int minutes)
+        public Projection(string color, string description, DateTimeOffset start, int minutes)
         {
             this.Color = color;
             this.Description = description;
@@ -16,7 +16,7 @@ namespace ScheduleBox.Model.PizzaCabinApiResponse
 
         public string Description { get; }
 
-        public DateTime Start { get; }
+        public DateTimeOffset Start { get; }
 
         public int Minutes { get; }
     }

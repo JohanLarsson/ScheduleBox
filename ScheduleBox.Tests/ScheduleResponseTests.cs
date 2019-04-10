@@ -16,20 +16,20 @@
             Assert.AreEqual(10, response.ScheduleResult.Schedules.Count);
             var schedule = response.ScheduleResult.Schedules.Single(x => x.Name == "Daniel Billsus");
             Assert.AreEqual(480, schedule.ContractTimeMinutes);
-            Assert.AreEqual(new DateTime(2015, 12, 14, 1, 0, 0, DateTimeKind.Utc), schedule.Date);
+            Assert.AreEqual(new DateTimeOffset(2015, 12, 14, 0, 0, 0, TimeSpan.Zero), schedule.Date);
             Assert.AreEqual(false, schedule.IsFullDayAbsence);
             Assert.AreEqual(7, schedule.Projection.Count);
 
             var projection = schedule.Projection[0];
             Assert.AreEqual("#1E90FF", projection.Color);
             Assert.AreEqual("Social Media", projection.Description);
-            Assert.AreEqual(new DateTime(2015, 12, 14, 9, 0, 0, DateTimeKind.Utc), projection.Start);
+            Assert.AreEqual(new DateTimeOffset(2015, 12, 14, 8, 0, 0, TimeSpan.Zero), projection.Start);
             Assert.AreEqual(120, projection.Minutes);
 
             projection = schedule.Projection[1];
             Assert.AreEqual("#FF0000", projection.Color);
             Assert.AreEqual("Short break", projection.Description);
-            Assert.AreEqual(new DateTime(2015, 12, 14, 11, 0, 0, DateTimeKind.Utc), projection.Start);
+            Assert.AreEqual(new DateTimeOffset(2015, 12, 14, 10, 0, 0, TimeSpan.Zero), projection.Start);
             Assert.AreEqual(15, projection.Minutes);
         }
     }

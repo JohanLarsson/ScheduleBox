@@ -5,7 +5,7 @@ namespace ScheduleBox.Model.PizzaCabinApiResponse
 
     public class Schedule
     {
-        public Schedule(int contractTimeMinutes, DateTime date, bool isFullDayAbsence, string name, string personId, IReadOnlyList<Projection> projection)
+        public Schedule(int contractTimeMinutes, DateTimeOffset date, bool isFullDayAbsence, string name, string personId, IReadOnlyList<Projection> projection)
         {
             this.ContractTimeMinutes = contractTimeMinutes;
             this.Date = date;
@@ -17,7 +17,7 @@ namespace ScheduleBox.Model.PizzaCabinApiResponse
 
         public int ContractTimeMinutes { get;  }
 
-        public DateTime Date { get;  }
+        public DateTimeOffset Date { get;  }
 
         public bool IsFullDayAbsence { get;  }
 
