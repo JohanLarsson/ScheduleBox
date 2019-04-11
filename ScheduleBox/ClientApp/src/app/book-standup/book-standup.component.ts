@@ -9,6 +9,7 @@ import { BookStandupResponse } from './BookStandupResponse';
 })
 export class BookStandupComponent implements OnInit, OnDestroy {
   response: BookStandupResponse;
+  private _attendees: number | null;
   private _date: string;
   private sub: any;
 
@@ -16,7 +17,7 @@ export class BookStandupComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
-  ) { }
+  ){ }
 
 
   public get date(): string {
@@ -27,6 +28,14 @@ export class BookStandupComponent implements OnInit, OnDestroy {
     const isoDate = this.getIsoDate(v);
     this._date = isoDate;
     this.router.navigate([`/book-standup/${isoDate}`]);
+  }
+
+  public get attendees(): number | null {
+    return this._attendees;
+  }
+
+  public set attendees(v: number | null) {
+    this._attendees = v;
   }
 
   ngOnInit(): void {

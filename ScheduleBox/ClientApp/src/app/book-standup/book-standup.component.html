@@ -1,4 +1,5 @@
 <p>Schedule</p>
-<input type="date" [(ngModel)] ="date" >
+<input type="date" [(ngModel)]="date" name="date">
+<input type="number" [(ngModel)]="attendees" name="attendees">
 <div>{{date}}</div>
 <div *ngIf="response">{{response.schedules.length}}</div>
