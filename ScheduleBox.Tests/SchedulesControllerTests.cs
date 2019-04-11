@@ -64,7 +64,8 @@
 
             var actionResult = await controller.Get(new DateTime(2015, 12, 14));
             var expected = @"{
-  ""Date"": ""2015-12-14T00:00:00+00:00"",
+  ""Start"": ""2015-12-14T08:00:00+00:00"",
+  ""End"": ""2015-12-14T20:00:00+00:00"",
   ""Schedules"": [
     {
       ""Person"": {

@@ -27,7 +27,7 @@ namespace ScheduleBox.Controllers
                 return this.NotFound("No schedules found for selected date. Please try again.");
             }
 
-            return new SchedulesResponse(new DateTimeOffset(date.Year, date.Month, date.Day, 0, 0, 0, TimeSpan.Zero), schedules);
+            return new SchedulesResponse(schedules);
         }
     }
 }
