@@ -1,6 +1,10 @@
-<p>{{response.schedules.length}}</p>
+<div class="schedule">
+  <ul class="schedule__row schedule__row--headers">
+    <li *ngFor="let header of headers" [style.grid-column-start]="header.start" [style.grid-column-end]="header.end">{{header.value}}</li>
+  </ul>
+</div>
 
-<ul>
+<!-- <ul>
   <li *ngFor="let timeslot of response.timeSlots">
     <ul>
       <li>{{timeslot.start}}</li>
@@ -21,3 +25,4 @@
     </ul>
   </li>
 </ul>
+-->

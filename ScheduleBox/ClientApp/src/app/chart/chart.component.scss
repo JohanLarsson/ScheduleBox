@@ -1,0 +1,20 @@
+.schedule {
+  display: grid;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  background: hotpink;
+
+  &__row {
+    display: grid;
+    grid-template-columns: 150px repeat(36, 1fr);
+    margin: 0;
+    padding: 0;
+
+    &--headers {
+      font-weight: bold;
+      margin-left: 2px;
+      list-style-type: none;
+    }
+  }
+}
