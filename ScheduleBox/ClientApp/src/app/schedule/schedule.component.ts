@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 export class ScheduleComponent implements OnInit, OnDestroy {
   json = 'Empty';
   private _date: string;
-  private dateSub: any;
+  private sub: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,17 +27,20 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     const isoDate = this.getIsoDate(v);
     this._date = isoDate;
     this.router.navigate([`/${isoDate}`]);
-    this.json = '';
-    this.http.get<string>(`${document.getElementsByTagName('base')[0].href}api/schedules/${isoDate}`)
-             .subscribe(x => this.json = JSON.stringify(x));
   }
 
   ngOnInit(): void {
-    this.dateSub = this.route.paramMap.subscribe(x => this.date = this.getIsoDate(x.get('date')));
+    this.sub = this.route.paramMap.subscribe(x => {
+      const isoDate = this.getIsoDate(x.get('date'));
+      this._date = isoDate;
+      this.json = '';
+      this.http.get<string>(`${document.getElementsByTagName('base')[0].href}api/schedules/${isoDate}`)
+               .subscribe(x => this.json = JSON.stringify(x));
+    });
   }
 
   ngOnDestroy() {
-    this.dateSub.unsubscribe();
+    this.sub.unsubscribe();
   }
 
   getIsoDate(text: string): string {
