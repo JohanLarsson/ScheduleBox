@@ -1,4 +1,4 @@
-export interface BookStandupResponse {
+export interface StandupOpportunities {
   timeSlots: TimeSlot[];
   schedules: Schedule[];
 }
