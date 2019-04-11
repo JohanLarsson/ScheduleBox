@@ -27,7 +27,6 @@
             }
 
             return response.ScheduleResult.Schedules
-                           .Where(x => !x.IsFullDayAbsence)
                            .Select(
                                x => new DaySchedule(
                                    new Person(
