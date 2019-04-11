@@ -60,6 +60,8 @@ export class DaySchedule {
   styleUrls: ["./chart.component.scss"]
 })
 export class ChartComponent {
+  @Input()
+  attendees: number | null;
   headers: Range<string>[];
   schedules: DaySchedule[] = [];
   slots: Range<Person[]>[] = [];
