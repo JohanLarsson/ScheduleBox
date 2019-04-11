@@ -6,7 +6,7 @@
 
   &__row {
     display: grid;
-    grid-template-columns: 150px repeat(36, 1fr);
+    grid-template-columns: 150px repeat((17 - 8) * 4, 1fr);
     margin: 0;
     padding: 0;
 
