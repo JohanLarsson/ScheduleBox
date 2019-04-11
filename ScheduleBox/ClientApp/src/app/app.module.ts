@@ -4,12 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ScheduleComponent } from './schedule/schedule.component';
+import { BookStandupComponent } from './book-standup/book-standup.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ScheduleComponent,
+    BookStandupComponent,
   ],
   imports: [
     BrowserModule,

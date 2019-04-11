@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ScheduleComponent } from './schedule/schedule.component';
+import { BookStandupComponent } from './book-standup/book-standup.component';
 
 const routes: Routes = [
-  { path: 'book-standup/:date', component: ScheduleComponent },
+  { path: 'book-standup/:date', component: BookStandupComponent },
   { path: '', redirectTo: 'book-standup/2015-12-14',   pathMatch: 'full' },
 ];
 
