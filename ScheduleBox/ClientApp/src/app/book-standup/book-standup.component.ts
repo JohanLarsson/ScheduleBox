@@ -13,13 +13,14 @@ export class BookStandupComponent implements OnInit, OnDestroy {
   error: string | null;
   private _attendees: number | null;
   private _isoDate: string | null;
-  private sub: any;
+  private dateSubcription: any;
+  private attendeesSubcription: any;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) { }
 
   public get date(): string {
     return this._isoDate;
@@ -41,7 +42,7 @@ export class BookStandupComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sub = this.route.paramMap
+    this.dateSubcription = this.route.paramMap
       .pipe(
         map(paramMap => this.getIsoDate(paramMap.get("date"))),
         distinctUntilChanged()
@@ -56,10 +57,18 @@ export class BookStandupComponent implements OnInit, OnDestroy {
             response => this.response = response,
             error => this.error = error.error);
       });
+
+    this.attendeesSubcription = this.route.queryParamMap
+      .pipe(
+        map(paramMap => paramMap.get("attendees")),
+        distinctUntilChanged()
+      )
+      .subscribe(x => this._attendees = x ? +x : null);
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.dateSubcription.unsubscribe();
+    this.attendeesSubcription.unsubscribe();
   }
 
   getIsoDate(text: string): string {
