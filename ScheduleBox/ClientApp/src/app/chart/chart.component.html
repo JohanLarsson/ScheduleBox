@@ -4,25 +4,12 @@
   </ul>
 </div>
 
-<!-- <ul>
-  <li *ngFor="let timeslot of response.timeSlots">
-    <ul>
-      <li>{{timeslot.start}}</li>
-      <li *ngFor="let attendee of timeslot.attendees">
-        <div>{{attendee.name}}</div>
-      </li>
-    </ul>
+<ul class="schedule__rows">
+  <li *ngFor="let schedule of schedules" tabindex="0">
+      <ul class="schedule__row">
+          <li class="schedule__row--label">{{schedule.person.name}}</li>
+          <li class="schedule__row--box" *ngFor="let activity of schedule.activities" [style.grid-column-start]="activity.start" [style.grid-column-end]="activity.end" [style.background]="activity.value.color"></li>
+      </ul>
   </li>
 </ul>
 
-<ul>
-  <li *ngFor="let schedule of response.schedules">
-    <ul>
-      <li>{{schedule.person.name}}</li>
-      <li *ngFor="let activity of schedule.activities">
-        <div>{{activity.description}}</div>
-      </li>
-    </ul>
-  </li>
-</ul>
--->

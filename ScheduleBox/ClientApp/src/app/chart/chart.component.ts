@@ -7,6 +7,10 @@ function* range(start: number, end: number) {
   }
 }
 
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+
 export class Range<T> {
   constructor(
     public start: number,
@@ -38,7 +42,9 @@ export class ChartComponent {
       range(this.startHour, this.endHour),
       x => {
         // One cell per fifteen minutes and first column for labels.
-        const start = (x - this.startHour) * 4 + 2;
+        const time = new Date();
+        time.setHours(x);
+        const start = this.getCellIndex(time);
         return new Range<string>(start, start + 3, `${x}:00`);
       }
     );
@@ -51,5 +57,21 @@ export class ChartComponent {
   @Input()
   public set response(v: SchedulesResponse) {
     this._response = v;
+    const endColumn = this.getCellIndex(new Date(0, 0, 0, this.endHour));
+    this.schedules = Array.from(
+      v.schedules,
+      x => new DaySchedule(
+        x.person,
+        Array.from(
+          x.activities.filter(a => new Date(a.start).getHours() <= this.endHour &&
+                                   new Date(a.end).getHours() >= this.startHour),
+          a => new Range<Activity>(
+            clamp(this.getCellIndex(new Date(a.start)), 2, endColumn),
+            clamp(this.getCellIndex(new Date(a.end)), 2, endColumn),
+            a))));
+  }
+
+  private getCellIndex(time: Date): number {
+    return ((time.getHours() - this.startHour) * 4) + 2 + Math.ceil(time.getMinutes() / 15);
   }
 }
