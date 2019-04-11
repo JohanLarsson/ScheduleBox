@@ -9,6 +9,19 @@
 
   $label-width: 150px;
 
+  &__lines {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+  }
+  
+  &__lines>span {
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: lightgray;
+  }
+
   &__columns-8-hours {
     grid-template-columns: $label-width repeat(8 * 4, 1fr);
   }
