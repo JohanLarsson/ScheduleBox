@@ -1,7 +1,12 @@
-<h1>Schedule</h1>
-<label for="date">Select date</label>
-<input type="date" [(ngModel)]="date" name="date">
-<label for="attendees">Min attendees</label>
-<input type="number" [(ngModel)]="attendees" name="attendees">
+<h1>Find a standup time</h1>
+<div>
+    <label for="date">Select date</label>
+    <input type="date" [(ngModel)]="date" name="date">
+</div>
+<div>
+    <label for="attendees">Min attendees</label>
+    <input type="number" [(ngModel)]="attendees" min="1" name="attendees">
+</div>
+
 <div *ngIf="error">{{error}}</div>
 <app-chart *ngIf="response" [response]="response"></app-chart>
