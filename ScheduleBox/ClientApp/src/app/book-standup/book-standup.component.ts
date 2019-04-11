@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
-import { StandupOpportunities } from "../shared/StandupOpportunitiesResponse";
+import { SchedulesResponse } from "../shared/SchedulesResponse";
 import { map, distinctUntilChanged } from "rxjs/operators";
 
 @Component({
@@ -9,7 +9,7 @@ import { map, distinctUntilChanged } from "rxjs/operators";
   styleUrls: ["./book-standup.component.scss"]
 })
 export class BookStandupComponent implements OnInit, OnDestroy {
-  response: StandupOpportunities | null;
+  response: SchedulesResponse | null;
   error: string | null;
   private _attendees: number | null;
   private _isoDate: string | null;
@@ -51,7 +51,7 @@ export class BookStandupComponent implements OnInit, OnDestroy {
         this.response = null;
         this.error = null;
         this.http
-          .get<StandupOpportunities>(`${document.getElementsByTagName("base")[0].href}api/schedules/${isoDate}`)
+          .get<SchedulesResponse>(`${document.getElementsByTagName("base")[0].href}api/schedules/${isoDate}`)
           .subscribe(
             response => this.response = response,
             error => this.error = error.error);

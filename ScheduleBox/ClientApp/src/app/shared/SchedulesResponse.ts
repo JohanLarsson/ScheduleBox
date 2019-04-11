@@ -1,12 +1,6 @@
-export interface StandupOpportunities {
-  timeSlots: TimeSlot[];
+export interface SchedulesResponse {
+  date: string;
   schedules: Schedule[];
-}
-
-export interface TimeSlot {
-  start: string;
-  end: string;
-  attendees: Person[];
 }
 
 export interface Person {

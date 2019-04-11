@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { StandupOpportunities } from '../shared/StandupOpportunitiesResponse';
+import { SchedulesResponse } from '../shared/SchedulesResponse';
 
 @Component({
   selector: 'app-chart',
@@ -8,5 +8,5 @@ import { StandupOpportunities } from '../shared/StandupOpportunitiesResponse';
 })
 export class ChartComponent {
   @Input()
-  response: StandupOpportunities;
+  response: SchedulesResponse;
 }
