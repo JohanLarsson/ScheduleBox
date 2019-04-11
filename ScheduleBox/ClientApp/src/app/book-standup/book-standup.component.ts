@@ -1,11 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { BookStandupResponse } from './BookStandupResponse';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
+import { BookStandupResponse } from "./BookStandupResponse";
+import { map, distinctUntilChanged } from "rxjs/operators";
 
 @Component({
-  templateUrl: './book-standup.component.html',
-  styleUrls: ['./book-standup.component.scss']
+  templateUrl: "./book-standup.component.html",
+  styleUrls: ["./book-standup.component.scss"]
 })
 export class BookStandupComponent implements OnInit, OnDestroy {
   response: BookStandupResponse;
@@ -16,14 +17,14 @@ export class BookStandupComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private http: HttpClient,
-  ){ }
+    private http: HttpClient
+  ) {}
 
   public get date(): string {
     return this._isoDate;
   }
 
-  public set date(v : string) {
+  public set date(v: string) {
     const isoDate = this.getIsoDate(v);
     this._isoDate = isoDate;
     this.navigate();
@@ -39,13 +40,18 @@ export class BookStandupComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sub = this.route.paramMap.subscribe(map => {
-      const isoDate = this.getIsoDate(map.get('date'));
-      this._isoDate = isoDate;
-      this.response = null;
-      this.http.get<BookStandupResponse>(`${document.getElementsByTagName('base')[0].href}api/schedules/${isoDate}`)
-               .subscribe(x => this.response = x);
-    });
+    this.sub = this.route.paramMap
+      .pipe(
+        map(paramMap => this.getIsoDate(paramMap.get("date"))),
+        distinctUntilChanged()
+      )
+      .subscribe(isoDate => {
+        this._isoDate = isoDate;
+        this.response = null;
+        this.http
+          .get<BookStandupResponse>(`${document.getElementsByTagName("base")[0].href}api/schedules/${isoDate}`)
+          .subscribe(x => (this.response = x));
+      });
   }
 
   ngOnDestroy() {
@@ -57,6 +63,8 @@ export class BookStandupComponent implements OnInit, OnDestroy {
   }
 
   private navigate() {
-    this.router.navigate([`/book-standup/${this._isoDate}`], { queryParams: { attendees: this.attendees } });
+    this.router.navigate([`/book-standup/${this._isoDate}`], {
+      queryParams: { attendees: this.attendees }
+    });
   }
 }
