@@ -1,9 +1,7 @@
-<p>Schedule</p>
+<h1>Schedule</h1>
 <label for="date">Select date</label>
 <input type="date" [(ngModel)]="date" name="date">
 <label for="attendees">Min attendees</label>
 <input type="number" [(ngModel)]="attendees" name="attendees">
-<div>{{date}}</div>
-<div *ngIf="response">{{response.schedules.length}}</div>
 <div *ngIf="error">{{error}}</div>
-<app-chart></app-chart>
+<app-chart [response]="response"></app-chart>
