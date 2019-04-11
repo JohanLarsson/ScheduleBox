@@ -18,7 +18,7 @@ namespace ScheduleBox.Controllers
 
         [HttpGet("{date:datetime}")]
 #pragma warning disable MVC1004 // Rename model bound parameter. https://github.com/aspnet/AspNetCore/issues/6945
-        public async Task<ActionResult<MeetingOpportunities>> Get(DateTime date)
+        public async Task<ActionResult<SchedulesResponse>> Get(DateTime date)
 #pragma warning restore MVC1004 // Rename model bound parameter.
         {
             var schedules = await this.client.GetSchedulesAsync(date);
@@ -27,7 +27,7 @@ namespace ScheduleBox.Controllers
                 return this.NotFound("No schedules found for selected date. Please try again.");
             }
 
-            return MeetingOpportunities.Create(date, schedules);
+            return new SchedulesResponse(new DateTimeOffset(date.Year, date.Month, date.Day, 0, 0, 0, TimeSpan.Zero), schedules);
         }
     }
 }
