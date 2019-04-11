@@ -1,1 +1,23 @@
 <p>{{response.schedules.length}}</p>
+
+<ul>
+  <li *ngFor="let timeslot of response.timeSlots">
+    <ul>
+      <li>{{timeslot.start}}</li>
+      <li *ngFor="let attendee of timeslot.attendees">
+        <div>{{attendee.name}}</div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<ul>
+  <li *ngFor="let schedule of response.schedules">
+    <ul>
+      <li>{{schedule.person.name}}</li>
+      <li *ngFor="let activity of schedule.activities">
+        <div>{{activity.description}}</div>
+      </li>
+    </ul>
+  </li>
+</ul>

@@ -4,4 +4,4 @@
 <label for="attendees">Min attendees</label>
 <input type="number" [(ngModel)]="attendees" name="attendees">
 <div *ngIf="error">{{error}}</div>
-<app-chart [response]="response"></app-chart>
+<app-chart *ngIf="response" [response]="response"></app-chart>
