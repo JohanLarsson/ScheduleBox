@@ -1,4 +1,4 @@
 <p>Schedule</p>
 <input type="date" [(ngModel)] ="date" >
 <div>{{date}}</div>
-<div>{{json}}</div>
+<div *ngIf="response">{{response.schedules.length}}</div>

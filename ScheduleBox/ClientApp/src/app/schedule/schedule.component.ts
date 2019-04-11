@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./schedule.component.scss']
 })
 export class ScheduleComponent implements OnInit, OnDestroy {
-  json = 'Empty';
+  response: ScheduleResponse;
   private _date: string;
   private sub: any;
 
@@ -33,9 +33,9 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     this.sub = this.route.paramMap.subscribe(x => {
       const isoDate = this.getIsoDate(x.get('date'));
       this._date = isoDate;
-      this.json = '';
-      this.http.get<string>(`${document.getElementsByTagName('base')[0].href}api/schedules/${isoDate}`)
-               .subscribe(x => this.json = JSON.stringify(x));
+      this.resonse = null;
+      this.http.get<ScheduleResponse>(`${document.getElementsByTagName('base')[0].href}api/schedules/${isoDate}`)
+               .subscribe(x => this.response = x);
     });
   }
 
@@ -46,4 +46,32 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   getIsoDate(text: string): string {
     return new Date(text).toISOString().substring(0, 10);
   }
+}
+
+export interface ScheduleResponse {
+  timeSlots: TimeSlot[];
+  schedules: Schedule[];
+}
+
+export interface TimeSlot {
+  start: string;
+  end: string;
+  attendees: Person[];
+}
+
+export interface Person {
+  name: string;
+  id: string;
+}
+
+export interface Activity {
+  description: string;
+  color: string;
+  start: string;
+  end: string;
+}
+
+export interface Schedule {
+  person: Person;
+  activities: Activity[];
 }
