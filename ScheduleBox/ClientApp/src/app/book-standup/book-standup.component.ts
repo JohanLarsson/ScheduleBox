@@ -19,7 +19,6 @@ export class BookStandupComponent implements OnInit, OnDestroy {
     private http: HttpClient,
   ){ }
 
-
   public get date(): string {
     return this._date;
   }
