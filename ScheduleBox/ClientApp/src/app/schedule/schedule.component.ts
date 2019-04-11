@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-schedule',
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.scss']
 })
@@ -26,7 +25,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   public set date(v : string) {
     const isoDate = this.getIsoDate(v);
     this._date = isoDate;
-    this.router.navigate([`/${isoDate}`]);
+    this.router.navigate([`/book-standup/${isoDate}`]);
   }
 
   ngOnInit(): void {

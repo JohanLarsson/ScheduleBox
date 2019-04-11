@@ -3,8 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { ScheduleComponent } from './schedule/schedule.component';
 
 const routes: Routes = [
-  { path: ':date', component: ScheduleComponent },
-  { path: '', redirectTo: '/2015-12-14',   pathMatch: 'full' },
+  { path: 'book-standup/:date', component: ScheduleComponent },
+  { path: '', redirectTo: 'book-standup/2015-12-14',   pathMatch: 'full' },
 ];
 
 @NgModule({
