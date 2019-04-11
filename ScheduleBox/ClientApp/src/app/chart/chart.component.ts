@@ -106,7 +106,10 @@ export class ChartComponent {
       x => new Range<Person[]>(
         x,
         x,
-        this.schedules.filter(s => s.activities.some(a => a.startColumn <= x && a.endColumn >= x))
+        this.schedules.filter(s => s.activities.some(a => a.startColumn <= x &&
+                                                          a.endColumn > x &&
+                                                          a.value.description !== 'Lunch' &&
+                                                          a.value.description !== 'Short break'))
           .map(s => s.person)));
   }
 }
