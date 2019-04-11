@@ -9,9 +9,10 @@ import { map, distinctUntilChanged } from "rxjs/operators";
   styleUrls: ["./book-standup.component.scss"]
 })
 export class BookStandupComponent implements OnInit, OnDestroy {
-  response: BookStandupResponse;
+  response: BookStandupResponse | null;
+  error: string | null;
   private _attendees: number | null;
-  private _isoDate: string;
+  private _isoDate: string | null;
   private sub: any;
 
   constructor(
@@ -48,9 +49,12 @@ export class BookStandupComponent implements OnInit, OnDestroy {
       .subscribe(isoDate => {
         this._isoDate = isoDate;
         this.response = null;
+        this.error = null;
         this.http
           .get<BookStandupResponse>(`${document.getElementsByTagName("base")[0].href}api/schedules/${isoDate}`)
-          .subscribe(x => (this.response = x));
+          .subscribe(
+            response => this.response = response,
+            error => this.error = error.error);
       });
   }
 
