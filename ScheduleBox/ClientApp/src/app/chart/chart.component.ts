@@ -1,11 +1,17 @@
-import { Component, Input } from "@angular/core";
-import { SchedulesResponse } from "../shared/SchedulesResponse";
+import { Component, Input } from '@angular/core';
+import { SchedulesResponse } from '../shared/SchedulesResponse';
 
 export class Range<T> {
   constructor(
     public start: number,
     public end: number,
     public value: T) {}
+}
+
+function* range(start: number, end: number) {
+  for (let i = start; i <= end; i++) {
+    yield i;
+  }
 }
 
 @Component({
@@ -16,6 +22,8 @@ export class Range<T> {
 export class ChartComponent {
   headers: Range<string>[] = [];
   private _response: SchedulesResponse;
+  private startHour = 8;
+  private endHour = 17;
 
   public get response(): SchedulesResponse {
     return this._response;
@@ -24,22 +32,12 @@ export class ChartComponent {
   @Input()
   public set response(v: SchedulesResponse) {
     this._response = v;
-    this.headers = [
-      this.createHeader(8),
-      this.createHeader(9),
-      this.createHeader(10),
-      this.createHeader(11),
-      this.createHeader(12),
-      this.createHeader(13),
-      this.createHeader(14),
-      this.createHeader(15),
-      this.createHeader(16),
-      this.createHeader(17),
-    ];
+    this.headers = Array.from(range(this.startHour, this.endHour), x => this.createHeader(x));
   }
 
   private createHeader(hour: number): Range<string> {
-    const start = ((hour - 8) * 4) + 2;
+    // One cell per fifteen minutes and first column for labels.
+    const start = ((hour - this.startHour) * 4) + 2;
     return new Range<string>(start, start + 3, `${hour}:00`);
   }
 }
