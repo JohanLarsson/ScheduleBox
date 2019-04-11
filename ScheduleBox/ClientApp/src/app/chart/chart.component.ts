@@ -7,15 +7,44 @@ function* range(start: number, end: number) {
   }
 }
 
-function clamp(value: number, min: number, max: number): number {
-  return Math.max(min, Math.min(max, value));
-}
-
 export class Range<T> {
   constructor(
-    public start: number,
-    public end: number,
+    public startColumn: number,
+    public endColumn: number,
     public value: T) {
+  }
+}
+
+export class Bounds {
+  // first column is for labels.
+  readonly startColumn = 2;
+  readonly endColumn: number;
+  constructor(
+    public readonly start: Date,
+    public readonly end: Date) {
+    this.endColumn = this.getColumnFromHours(end.getHours()) + Math.floor((end.getMinutes() - start.getMinutes()) / 15);
+  }
+
+  getStartColumn(time: Date): number {
+    return this.clamp(
+      this.getColumnFromHours(time.getHours()) + Math.floor(time.getMinutes() / 15),
+      this.startColumn,
+      this.endColumn);
+  }
+
+  getEndColumn(time: Date): number {
+    return this.clamp(
+      this.getColumnFromHours(time.getHours()) + Math.ceil(time.getMinutes() / 15),
+      this.startColumn,
+      this.endColumn);
+  }
+
+  getColumnFromHours(hours: number): number {
+    return ((hours - this.start.getHours()) * 4) + this.startColumn;
+  }
+
+  private clamp(value: number, min: number, max: number): number {
+    return Math.max(min, Math.min(max, value));
   }
 }
 
@@ -33,22 +62,9 @@ export class DaySchedule {
 export class ChartComponent {
   headers: Range<string>[];
   schedules: DaySchedule[] = [];
+  slots: Range<Person[]>[] = [];
+  bounds: Bounds;
   private _response: SchedulesResponse;
-  private startHour = 8;
-  private endHour = 17;
-
-  constructor() {
-    this.headers = Array.from(
-      range(this.startHour, this.endHour),
-      x => {
-        // One cell per fifteen minutes and first column for labels.
-        const time = new Date();
-        time.setHours(x);
-        const start = this.getCellIndex(time);
-        return new Range<string>(start, start + 3, `${x}:00`);
-      }
-    );
-  }
 
   public get response(): SchedulesResponse {
     return this._response;
@@ -57,21 +73,40 @@ export class ChartComponent {
   @Input()
   public set response(v: SchedulesResponse) {
     this._response = v;
-    const endColumn = this.getCellIndex(new Date(0, 0, 0, this.endHour));
+    if (v == null) {
+      this.bounds = null;
+      this.headers = [];
+      this.schedules = [];
+      this.slots = [];
+      return;
+    }
+    this.bounds = new Bounds(new Date(v.start), new Date(v.end));
+
+    this.headers = Array.from(
+      range(this.bounds.start.getHours(), this.bounds.end.getHours()),
+      x => {
+        const start = this.bounds.getColumnFromHours(x);
+        return new Range<string>(start, start + 3, `${x}:00`);
+      }
+    );
+
     this.schedules = Array.from(
       v.schedules,
       x => new DaySchedule(
         x.person,
         Array.from(
-          x.activities.filter(a => new Date(a.start).getHours() <= this.endHour &&
-                                   new Date(a.end).getHours() >= this.startHour),
+          x.activities,
           a => new Range<Activity>(
-            clamp(this.getCellIndex(new Date(a.start)), 2, endColumn),
-            clamp(this.getCellIndex(new Date(a.end)), 2, endColumn),
+            this.bounds.getStartColumn(new Date(a.start)),
+            this.bounds.getEndColumn(new Date(a.end)),
             a))));
-  }
 
-  private getCellIndex(time: Date): number {
-    return ((time.getHours() - this.startHour) * 4) + 2 + Math.ceil(time.getMinutes() / 15);
+    this.slots = Array.from(
+      range(this.bounds.startColumn, this.bounds.endColumn),
+      x => new Range<Person[]>(
+        x,
+        x,
+        this.schedules.filter(s => s.activities.some(a => a.startColumn <= x && a.endColumn >= x))
+          .map(s => s.person)));
   }
 }

@@ -1,5 +1,6 @@
 export interface SchedulesResponse {
-  date: string;
+  start: string;
+  end: string;
   schedules: Schedule[];
 }
 

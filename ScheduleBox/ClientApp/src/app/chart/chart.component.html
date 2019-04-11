@@ -1,15 +1,21 @@
 <div class="schedule">
-  <ul class="schedule__row schedule__row--headers">
-    <li *ngFor="let header of headers" [style.grid-column-start]="header.start" [style.grid-column-end]="header.end">{{header.value}}</li>
+  <ul class="schedule__row schedule__row--columns schedule__columns-12-hours">
+    <li *ngFor="let slot of slots" [style.grid-column-start]="slot.startColumn" [style.height.rem]="slot.value.length"></li>
+  </ul>
+
+  <ul class="schedule__row schedule__row--headers schedule__columns-12-hours">
+    <li *ngFor="let header of headers" [style.grid-column-start]="header.startColumn"
+      [style.grid-column-end]="header.endColumn">{{header.value}}</li>
+  </ul>
+
+  <ul class="schedule__rows">
+    <li *ngFor="let schedule of schedules" tabindex="0">
+      <ul class="schedule__row schedule__columns-12-hours">
+        <li class="schedule__row--label">{{schedule.person.name}}</li>
+        <li class="schedule__row--box" *ngFor="let activity of schedule.activities"
+          [style.grid-column-start]="activity.startColumn" [style.grid-column-end]="activity.endColumn"
+          [style.background]="activity.value.color"></li>
+      </ul>
+    </li>
   </ul>
 </div>
-
-<ul class="schedule__rows">
-  <li *ngFor="let schedule of schedules" tabindex="0">
-      <ul class="schedule__row">
-          <li class="schedule__row--label">{{schedule.person.name}}</li>
-          <li class="schedule__row--box" *ngFor="let activity of schedule.activities" [style.grid-column-start]="activity.start" [style.grid-column-end]="activity.end" [style.background]="activity.value.color"></li>
-      </ul>
-  </li>
-</ul>
-

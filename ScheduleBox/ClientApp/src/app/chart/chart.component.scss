@@ -4,11 +4,35 @@
   overflow: hidden;
   box-sizing: border-box;
 
+  $label-width: 150px;
+
+  &__columns-8-hours {
+    grid-template-columns: $label-width repeat(8 * 4, 1fr);
+  }
+
+  &__columns-12-hours {
+    grid-template-columns: $label-width repeat(12 * 4, 1fr);
+  }
+
+  &__columns-16-hours {
+    grid-template-columns: $label-width repeat(16 * 4, 1fr);
+  }
+
+  &__columns-24-hours {
+    grid-template-columns: $label-width repeat(24 * 4, 1fr);
+  }
+
   &__row {
     display: grid;
-    grid-template-columns: 150px repeat((17 - 8) * 4, 1fr);
     margin: 0;
     padding: 0;
+
+    &--columns > li {
+      list-style-type: none;
+      margin: 0 1px;
+      align-self: end;
+      background: hotpink;
+    }
 
     &--headers {
       font-weight: bold;
