@@ -8,9 +8,9 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should navigate to date', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('Welcome to ScheduleBox!');
+    expect(page.getDate()).toEqual('2015-12-14');
   });
 
   afterEach(async () => {
