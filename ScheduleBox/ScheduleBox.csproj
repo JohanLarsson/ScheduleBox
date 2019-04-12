@@ -11,6 +11,7 @@
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <CodeAnalysisRuleSet>ScheduleBox.ruleset</CodeAnalysisRuleSet>
+    <UserSecretsId>b8b638fe-78bf-461c-ac50-534447b715d1</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
