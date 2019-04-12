@@ -85,7 +85,7 @@ export class ChartComponent {
     this.bounds = new Bounds(new Date(v.start), new Date(v.end));
 
     this.headers = Array.from(
-      range(this.bounds.start.getHours(), this.bounds.end.getHours()),
+      range(this.bounds.start.getHours(), this.bounds.end.getHours() - 1),
       x => {
         const start = this.bounds.getColumnFromHours(x);
         return new Range<string>(start, start + 4, `${x}:00`);
