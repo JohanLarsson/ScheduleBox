@@ -39,16 +39,16 @@
   }
 
   &__columns {
+    grid-gap: 2px;
     > li {
       list-style-type: none;
-      margin: 0 1px;
       align-self: end;
       background: rgb(203, 255, 201);
     }
   }
 
   &__headers {
-    > li {
+    & > li {
       font-weight: bold;
       margin-left: 2px;
       list-style-type: none;
