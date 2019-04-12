@@ -1,12 +1,13 @@
 .too-few {
   filter: saturate(0%);
 }
-.schedule {
+.chart {
   display: grid;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
 
+  $stripe-color: rgba(230, 230, 230, 0.2);
   $label-width: 150px;
 
   &__lines {
@@ -15,7 +16,7 @@
     width: 100%;
     pointer-events: none;
   }
-  
+
   &__lines>span {
     border-left-width: 1px;
     border-left-style: solid;
@@ -38,23 +39,27 @@
     grid-template-columns: $label-width repeat(24 * 4, 1fr);
   }
 
-  &__row {
-    display: grid;
-    margin: 0;
-    padding: 0;
-
-    &--columns > li {
+  &__columns {
+    > li {
       list-style-type: none;
       margin: 0 1px;
       align-self: end;
       background: rgb(203, 255, 201);
-    }
+      }
+  }
 
-    &--headers {
+  &__headers {
+    > li {
       font-weight: bold;
       margin-left: 2px;
       list-style-type: none;
-    }
+      }
+  }
+
+  &__row {
+    display: grid;
+    margin: 0;
+    padding: 0;
 
     &--label {
       white-space: nowrap;
