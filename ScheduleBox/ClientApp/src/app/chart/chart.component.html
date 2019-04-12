@@ -1,9 +1,4 @@
 <div class="chart">
-  <div class="chart__row chart__lines chart__columns-12-hours">
-    <span *ngFor="let header of headers" [style.grid-column-start]="header.startColumn"
-    [style.grid-column-end]="header.endColumn"></span>
-  </div>
-
   <ul class="chart__row chart__columns chart__columns-12-hours">
     <li *ngFor="let slot of slots" [style.grid-column-start]="slot.startColumn" [style.height.rem]="slot.value.length"
       [class.too-few]="slot.value.length < sceduleService.attendees"></li>
@@ -24,4 +19,9 @@
       </ul>
     </li>
   </ul>
+
+  <div class="chart__row chart__lines chart__columns-12-hours">
+    <span *ngFor="let header of headers" [style.grid-column-start]="header.startColumn"
+      [style.grid-column-end]="header.endColumn"></span>
+  </div>
 </div>
