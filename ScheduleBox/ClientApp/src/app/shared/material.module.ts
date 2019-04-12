@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
-import { MatDatepickerModule, MaterialIconModule } from '@angular/material';
+import { MatDatepickerModule, MatIconModule } from '@angular/material';
 
 @NgModule({
   declarations: [],
   imports: [
     MatDatepickerModule,
-    MaterialIconModule,
+    MatIconModule,
   ],
   exports: [
     MatDatepickerModule,
-    MaterialIconModule,
+    MatIconModule,
   ]
 })
 export class MaterialModule { }
