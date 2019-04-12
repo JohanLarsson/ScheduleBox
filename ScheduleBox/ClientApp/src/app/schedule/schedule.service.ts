@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { SchedulesResponse } from './SchedulesResponse';
 import { HttpClient } from '@angular/common/http';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScheduleService {
-  readonly response = new BehaviorSubject<SchedulesResponse>(null);
+  private readonly _response = new BehaviorSubject<SchedulesResponse>(null);
   error: string | null;
   attendees: number | null;
   private _isoDate: string | null;
@@ -22,12 +22,16 @@ export class ScheduleService {
 
   public set isoDate(v: string) {
     this._isoDate = v;
-    this.response.next(null);
+    this._response.next(null);
     this.error = null;
     this.http
       .get<SchedulesResponse>(`${document.getElementsByTagName("base")[0].href}api/schedules/${v}`)
       .subscribe(
-        response => this.response.next(response),
+        response => this._response.next(response),
         error => this.error = error.error);
   }
+  
+  public get response() : Observable<SchedulesResponse> {
+    return this._response.asObservable();
+  } 
 }
