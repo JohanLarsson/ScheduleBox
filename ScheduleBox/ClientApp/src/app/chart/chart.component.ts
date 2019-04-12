@@ -102,7 +102,7 @@ export class ChartComponent implements OnInit, OnDestroy {
                 a))));
 
         this.slots = Array.from(
-          range(this.bounds.startColumn, this.bounds.endColumn),
+          range(this.bounds.startColumn, this.bounds.endColumn - 1),
           x => new Range<Person[]>(
             x,
             x,
