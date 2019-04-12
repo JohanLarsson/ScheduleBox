@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { SchedulesResponse, Activity, Person } from '../shared/SchedulesResponse';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { SchedulesResponse, Activity, Person } from '../schedule/SchedulesResponse';
+import { ScheduleService } from '../schedule/schedule.service';
 
 function* range(start: number, end: number) {
   for (let i = start; i <= end; i++) {
@@ -59,59 +60,61 @@ export class DaySchedule {
   templateUrl: "./chart.component.html",
   styleUrls: ["./chart.component.scss"]
 })
-export class ChartComponent {
-  @Input()
-  attendees: number | null;
+export class ChartComponent implements OnInit, OnDestroy {
   headers: Range<string>[];
   schedules: DaySchedule[] = [];
   slots: Range<Person[]>[] = [];
   bounds: Bounds;
-  private _response: SchedulesResponse;
+  private subscription: any;
 
-  public get response(): SchedulesResponse {
-    return this._response;
+  constructor(public sceduleService: ScheduleService) {
   }
 
-  @Input()
-  public set response(v: SchedulesResponse) {
-    this._response = v;
-    if (v == null) {
-      this.bounds = null;
-      this.headers = [];
-      this.schedules = [];
-      this.slots = [];
-      return;
-    }
-    this.bounds = new Bounds(new Date(v.start), new Date(v.end));
+  ngOnInit(): void {
+    this.subscription = this.sceduleService.response.subscribe(
+      response => {
+        if (response == null) {
+          this.bounds = null;
+          this.headers = [];
+          this.schedules = [];
+          this.slots = [];
+          return;
+        }
 
-    this.headers = Array.from(
-      range(this.bounds.start.getHours(), this.bounds.end.getHours() - 1),
-      x => {
-        const start = this.bounds.getColumnFromHours(x);
-        return new Range<string>(start, start + 4, `${x}:00`);
-      }
-    );
+        this.bounds = new Bounds(new Date(response.start), new Date(response.end));
+        this.headers = Array.from(
+          range(this.bounds.start.getHours(), this.bounds.end.getHours() - 1),
+          x => {
+            const start = this.bounds.getColumnFromHours(x);
+            return new Range<string>(start, start + 4, `${x}:00`);
+          }
+        );
 
-    this.schedules = Array.from(
-      v.schedules,
-      x => new DaySchedule(
-        x.person,
-        Array.from(
-          x.activities,
-          a => new Range<Activity>(
-            this.bounds.getStartColumn(new Date(a.start)),
-            this.bounds.getEndColumn(new Date(a.end)),
-            a))));
+        this.schedules = Array.from(
+          response.schedules,
+          x => new DaySchedule(
+            x.person,
+            Array.from(
+              x.activities,
+              a => new Range<Activity>(
+                this.bounds.getStartColumn(new Date(a.start)),
+                this.bounds.getEndColumn(new Date(a.end)),
+                a))));
 
-    this.slots = Array.from(
-      range(this.bounds.startColumn, this.bounds.endColumn),
-      x => new Range<Person[]>(
-        x,
-        x,
-        this.schedules.filter(s => s.activities.some(a => a.startColumn <= x &&
-                                                          a.endColumn > x &&
-                                                          a.value.description !== 'Lunch' &&
-                                                          a.value.description !== 'Short break'))
-          .map(s => s.person)));
+        this.slots = Array.from(
+          range(this.bounds.startColumn, this.bounds.endColumn),
+          x => new Range<Person[]>(
+            x,
+            x,
+            this.schedules.filter(s => s.activities.some(a => a.startColumn <= x &&
+              a.endColumn > x &&
+              a.value.description !== 'Lunch' &&
+              a.value.description !== 'Short break'))
+              .map(s => s.person)));
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

@@ -2,11 +2,11 @@
 <div>
     <label for="date">Select date</label>
     <input type="date" [(ngModel)]="date" name="date">
+    <div *ngIf="scheduleService.error">{{scheduleService.error}}</div>
 </div>
 <div>
     <label for="attendees">Min attendees</label>
     <input type="number" [(ngModel)]="attendees" min="1" name="attendees">
 </div>
 
-<div *ngIf="error">{{error}}</div>
-<app-chart *ngIf="response" [response]="response" [attendees]="attendees"></app-chart>
+<app-chart *ngIf="scheduleService.response"></app-chart>
