@@ -5,5 +5,6 @@ Toy WFM app
 
 - AspNetCore backend.
 - OpenAPI endpoint: https://schedulebox20190412084103.azurewebsites.net/swagger/v0/swagger.json
+- Swagger: https://schedulebox20190412084103.azurewebsites.net/swagger/index.html
 - Angular frontend: https://schedulebox20190412084103.azurewebsites.net/book-standup/2015-12-14
 
