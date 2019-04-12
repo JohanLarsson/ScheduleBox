@@ -15,7 +15,7 @@
     height: 100%;
     width: 100%;
     pointer-events: none;
-    >span {
+    > span {
       border-left-width: 1px;
       border-left-style: solid;
       border-left-color: lightgray;
@@ -44,7 +44,7 @@
       margin: 0 1px;
       align-self: end;
       background: rgb(203, 255, 201);
-      }
+    }
   }
 
   &__headers {
@@ -52,7 +52,7 @@
       font-weight: bold;
       margin-left: 2px;
       list-style-type: none;
-      }
+    }
   }
 
   &__row {
