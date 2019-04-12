@@ -1,6 +1,7 @@
 <div class="schedule">
   <div class="schedule__row schedule__lines schedule__columns-12-hours">
-    <span *ngFor="let slot of slots" [style.grid-column-start]="slot.startColumn" ></span>
+    <span *ngFor="let header of headers" [style.grid-column-start]="header.startColumn"
+    [style.grid-column-end]="header.endColumn"></span>
   </div>
 
   <ul class="schedule__row schedule__row--columns schedule__columns-12-hours">
