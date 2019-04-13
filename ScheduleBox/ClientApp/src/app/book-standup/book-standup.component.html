@@ -1,12 +1,12 @@
 <mat-card>
     <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="scheduleService.date">
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="scheduleService.date" required>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-    
+
     <br />
-    
+
     <mat-form-field>
         <input type="number" matInput placeholder="Minimum attendees" min="1" required="false" [(ngModel)]="scheduleService.attendees">
     </mat-form-field>
