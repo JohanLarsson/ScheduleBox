@@ -25,7 +25,7 @@ namespace ScheduleBox.Controllers
         [HttpGet("{dateString}")]
         public async Task<ActionResult<SchedulesResponse>> Get(string dateString)
         {
-            if (DateTimeOffset.TryParseExact(dateString, "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var date))
+            if (DateTimeOffset.TryParseExact(dateString, "O", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var date))
             {
                 var schedules = await this.client.GetSchedulesAsync(date);
                 if (schedules.Count == 0)

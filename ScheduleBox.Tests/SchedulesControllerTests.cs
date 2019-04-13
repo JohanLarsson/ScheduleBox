@@ -517,8 +517,9 @@
         }
 
         [TestCase("2015-12-14T00:00:00.0000000+00:00", true)]
-        [TestCase("2019-04-13 17:41:30Z", true)]
-        [TestCase("2019-04-13 17:41:30", false)]
+        [TestCase("2015-12-14T00:00:00.0000000Z", true)]
+        [TestCase("2015-12-14T00:00:00Z", true)]
+        [TestCase("2015-12-14 00:00:00", false)]
         public async Task AcceptsOnlyIso8601(string date, bool success)
         {
             var fakeHttpMessageHandler = new FakeHttpMessageHandler(
