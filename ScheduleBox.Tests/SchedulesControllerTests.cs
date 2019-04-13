@@ -1,6 +1,5 @@
 ﻿namespace ScheduleBox.Tests
 {
-    using System;
     using System.Net;
     using System.Net.Http;
     using System.Text;
@@ -26,7 +25,7 @@
                 });
             var controller = new SchedulesController(new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler)));
 
-            _ = await controller.Get(new DateTime(2015, 12, 14));
+            _ = await controller.Get("2015-12-14T00:00:00.0000000+00:00");
             Assert.AreEqual("http://pizzacabininc.azurewebsites.net/PizzaCabinInc.svc/schedule/2015-12-14", fakeHttpMessageHandler.Request.RequestUri.AbsoluteUri);
         }
 
@@ -43,7 +42,7 @@
                 });
             var controller = new SchedulesController(new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler)));
 
-            var actionResult = await controller.Get(new DateTime(2015, 12, 14));
+            var actionResult = await controller.Get("2015-12-14T00:00:00.0000000+00:00");
             Assert.IsInstanceOf<NotFoundObjectResult>(actionResult.Result);
             var notFound = (NotFoundObjectResult)actionResult.Result;
             Assert.AreEqual("No schedules found for selected date. Please try again.", notFound.Value);
@@ -62,7 +61,7 @@
                 });
             var controller = new SchedulesController(new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler)));
 
-            var actionResult = await controller.Get(new DateTime(2015, 12, 14));
+            var actionResult = await controller.Get("2015-12-14T00:00:00.0000000+00:00");
             var expected = @"{
   ""Start"": ""2015-12-14T08:00:00+00:00"",
   ""End"": ""2015-12-14T20:00:00+00:00"",

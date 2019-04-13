@@ -19,7 +19,7 @@
 
         public async Task<IReadOnlyList<DaySchedule>> GetSchedulesAsync(DateTimeOffset date)
         {
-            var json = await this.httpClient.GetStringAsync($"http://pizzacabininc.azurewebsites.net/PizzaCabinInc.svc/schedule/{date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}").ConfigureAwait(false);
+            var json = await this.httpClient.GetStringAsync($"http://pizzacabininc.azurewebsites.net/PizzaCabinInc.svc/schedule/{date.UtcDateTime.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}").ConfigureAwait(false);
             var response = JsonConvert.DeserializeObject<ScheduleResponse>(json);
             if (response.ScheduleResult?.Schedules == null)
             {

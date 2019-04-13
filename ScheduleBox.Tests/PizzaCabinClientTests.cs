@@ -24,7 +24,7 @@
                 });
             var client = new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler));
 
-            _ = await client.GetSchedulesAsync(new DateTime(2015, 12, 14));
+            _ = await client.GetSchedulesAsync(new DateTimeOffset(2015, 12, 14, 0, 0, 0, TimeSpan.Zero));
             Assert.AreEqual("http://pizzacabininc.azurewebsites.net/PizzaCabinInc.svc/schedule/2015-12-14", fakeHttpMessageHandler.Request.RequestUri.AbsoluteUri);
         }
 
