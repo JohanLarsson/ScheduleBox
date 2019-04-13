@@ -1,12 +1,14 @@
 <mat-card>
-    <div>
-        <label for="date">Select date</label>
-        <input type="date" [(ngModel)]="date" name="date">
-        <div *ngIf="scheduleService.error">{{scheduleService.error}}</div>
-    </div>
-
     <mat-form-field>
-        <input type="number" matInput placeholder="Minimum attendees" min="1" required="false" [(ngModel)]="attendees">
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="scheduleService.date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    
+    <br />
+    
+    <mat-form-field>
+        <input type="number" matInput placeholder="Minimum attendees" min="1" required="false" [(ngModel)]="scheduleService.attendees">
     </mat-form-field>
 
     <app-chart *ngIf="scheduleService.response"></app-chart>
