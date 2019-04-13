@@ -26,7 +26,7 @@ export class ScheduleService {
           .subscribe(
             response => this._response.next(response),
             error => this.error = error.error);
-      })
+      });
   }
 
   public get date(): Date {
@@ -35,7 +35,7 @@ export class ScheduleService {
 
   public set date(v: Date) {
     this._date = v;
-    this._isoDate.next(v.toISOString().substring(0, 10))
+    this._isoDate.next(v.toISOString().substring(0, 10));
   }
 
   public get isoDate(): Observable<string> {
@@ -46,12 +46,12 @@ export class ScheduleService {
     return this._attendees.value;
   }
 
-  public get attendeesObservable(): Observable<number | null> {
-    return this._attendees.pipe(distinctUntilChanged());
-  }
-
   public set attendees(v: number | null) {
     this._attendees.next(v);
+  }
+
+  public get attendeesObservable(): Observable<number | null> {
+    return this._attendees.pipe(distinctUntilChanged());
   }
 
   public get response(): Observable<SchedulesResponse> {
