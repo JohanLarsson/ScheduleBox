@@ -23,9 +23,7 @@ namespace ScheduleBox.Controllers
         /// <param name="dateString">The date formatted according to https://sv.wikipedia.org/wiki/ISO_8601.</param>
         /// <returns>The schedules for selected date.</returns>
         [HttpGet("{dateString}")]
-#pragma warning disable MVC1004 // Rename model bound parameter. https://github.com/aspnet/AspNetCore/issues/6945
         public async Task<ActionResult<SchedulesResponse>> Get(string dateString)
-#pragma warning restore MVC1004 // Rename model bound parameter.
         {
             if (DateTimeOffset.TryParseExact(dateString, "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var date))
             {
