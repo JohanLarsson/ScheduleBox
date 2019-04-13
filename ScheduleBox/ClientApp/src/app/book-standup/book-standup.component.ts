@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, distinctUntilChanged } from 'rxjs/operators';
+import { map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { ScheduleService } from '../schedule/schedule.service';
-import { combineLatest } from 'rxjs';
+import { combineLatest, pipe } from 'rxjs';
 
 @Component({
   templateUrl: './book-standup.component.html',
@@ -33,9 +33,11 @@ export class BookStandupComponent implements OnInit, OnDestroy {
       .subscribe(x => this.scheduleService.attendees = x ? +x : null);
 
     this.navigateSubscription = combineLatest(
-      this.scheduleService.isoDate,
+      this.scheduleService.dateObservable.pipe(filter(x => x !== null)),
       this.scheduleService.attendeesObservable)
-      .subscribe(x => this.router.navigate([`/book-standup/${x[0]}`], { queryParams: { attendees: x[1] } }));
+      .subscribe(x => this.router.navigate(
+        [`/book-standup/${x[0].getFullYear()}-${x[0].getMonth() + 1}-${x[0].getDate()}`],
+        { queryParams: { attendees: x[1] } }));
   }
 
   ngOnDestroy() {

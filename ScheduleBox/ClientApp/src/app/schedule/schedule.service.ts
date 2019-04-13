@@ -10,36 +10,38 @@ import { distinctUntilChanged } from 'rxjs/operators';
 export class ScheduleService {
   error: string | null;
   private readonly _response = new BehaviorSubject<SchedulesResponse>(null);
-  private _date: Date;
-  private _isoDate = new BehaviorSubject<string>('');
+  private readonly _date = new BehaviorSubject<Date | null>(null);
   private _attendees = new BehaviorSubject<number | null>(null);
 
   constructor(http: HttpClient
   ) {
-    this._isoDate.pipe(
+    this._date.pipe(
       distinctUntilChanged())
-      .subscribe(isoDate => {
+      .subscribe(date => {
         this._response.next(null);
-        this.error = null;
-        http
-          .get<SchedulesResponse>(`${document.getElementsByTagName("base")[0].href}api/schedules/${isoDate}`)
-          .subscribe(
-            response => this._response.next(response),
-            error => this.error = error.error);
+        if (date === null) {
+          this.error = 'Invalid date.';
+        } else {
+          this.error = null;
+          http
+            .get<SchedulesResponse>(`${document.getElementsByTagName('base')[0].href}api/schedules/${date.toISOString()}`)
+            .subscribe(
+              response => this._response.next(response),
+              error => this.error = error.error);
+        }
       });
   }
 
-  public get date(): Date {
-    return this._date;
+  public get date(): Date | null {
+    return this._date.value;
   }
 
   public set date(v: Date) {
-    this._date = v;
-    this._isoDate.next(v.toISOString().substring(0, 10));
+    this._date.next(isNaN(v.getMilliseconds()) ? null : v);
   }
 
-  public get isoDate(): Observable<string> {
-    return this._isoDate.pipe(distinctUntilChanged());
+  public get dateObservable(): Observable<Date | null> {
+    return this._date.pipe(distinctUntilChanged());
   }
 
   public get attendees(): number | null {
