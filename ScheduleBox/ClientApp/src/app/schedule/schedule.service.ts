@@ -11,7 +11,7 @@ export class ScheduleService {
   error: string | null;
   private readonly _response = new BehaviorSubject<SchedulesResponse>(null);
   private readonly _date = new BehaviorSubject<Date | null>(null);
-  private _attendees = new BehaviorSubject<number | null>(null);
+  private readonly _attendees = new BehaviorSubject<number | null>(null);
 
   constructor(http: HttpClient
   ) {
