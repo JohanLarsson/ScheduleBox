@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { ScheduleService } from '../schedule/schedule.service';
-import { combineLatest, pipe } from 'rxjs';
+import { combineLatest } from 'rxjs';
 
 @Component({
   templateUrl: './book-standup.component.html',
