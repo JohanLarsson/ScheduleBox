@@ -1,11 +1,13 @@
-<div>
-    <label for="date">Select date</label>
-    <input type="date" [(ngModel)]="date" name="date">
-    <div *ngIf="scheduleService.error">{{scheduleService.error}}</div>
-</div>
-<div>
-    <label for="attendees">Min attendees</label>
-    <input type="number" [(ngModel)]="attendees" min="1" name="attendees">
-</div>
+<mat-card>
+    <div>
+        <label for="date">Select date</label>
+        <input type="date" [(ngModel)]="date" name="date">
+        <div *ngIf="scheduleService.error">{{scheduleService.error}}</div>
+    </div>
 
-<app-chart *ngIf="scheduleService.response"></app-chart>
+    <mat-form-field>
+        <input type="number" matInput placeholder="Minimum attendees" min="1" required="false" [(ngModel)]="attendees">
+    </mat-form-field>
+
+    <app-chart *ngIf="scheduleService.response"></app-chart>
+</mat-card>
