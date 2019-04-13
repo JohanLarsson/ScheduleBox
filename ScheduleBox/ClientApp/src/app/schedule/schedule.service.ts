@@ -15,10 +15,10 @@ export class ScheduleService {
   private _attendees = new BehaviorSubject<number | null>(null);
 
   constructor(http: HttpClient
-  ) { 
+  ) {
     this._isoDate.pipe(
       distinctUntilChanged())
-      .subscribe(isoDate =>{
+      .subscribe(isoDate => {
         this._response.next(null);
         this.error = null;
         http
@@ -42,15 +42,15 @@ export class ScheduleService {
     return this._isoDate.pipe(distinctUntilChanged());
   }
 
-  public get attendees() : number | null {
+  public get attendees(): number | null {
     return this._attendees.value;
   }
-  
-  public get attendeesObservable() : Observable<number | null> {
+
+  public get attendeesObservable(): Observable<number | null> {
     return this._attendees.pipe(distinctUntilChanged());
   }
 
-  public set attendees(v : number | null) {
+  public set attendees(v: number | null) {
     this._attendees.next(v);
   }
 
