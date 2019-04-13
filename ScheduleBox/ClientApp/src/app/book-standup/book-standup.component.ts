@@ -19,12 +19,25 @@ export class BookStandupComponent implements OnInit, OnDestroy {
     public scheduleService: ScheduleService
   ) { }
 
+
+  public get date(): Date {
+    return this.scheduleService.date;
+  }
+
+  public set date(v: Date) {
+    console.log(`datepicker: ${v}`);
+    this.scheduleService.date = v;
+  }
+
   ngOnInit(): void {
     this.dateParameterSubcription = this.route.paramMap
       .pipe(
         map(paramMap => new Date(paramMap.get('date'))),
         distinctUntilChanged())
-      .subscribe(date => this.scheduleService.date = date);
+      .subscribe(date => {
+        console.log(`url: ${date}`);
+        this.scheduleService.date = date;
+      });
 
     this.attendeesQueryParameterSubcription = this.route.queryParamMap
       .pipe(
