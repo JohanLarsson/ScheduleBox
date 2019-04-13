@@ -7,7 +7,7 @@ namespace ScheduleBox
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OpenApi.Models;
-    using ScheduleBox.Model.PizzaCabinApiResponse;
+    using ScheduleBox.Model;
 
     public class Startup
     {

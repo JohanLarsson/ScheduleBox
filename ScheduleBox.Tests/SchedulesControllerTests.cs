@@ -9,7 +9,6 @@
     using NUnit.Framework;
     using ScheduleBox.Controllers;
     using ScheduleBox.Model;
-    using ScheduleBox.Model.PizzaCabinApiResponse;
 
     public class SchedulesControllerTests
     {
@@ -26,7 +25,7 @@
                 });
             var controller = new SchedulesController(new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler)));
 
-            _ = await controller.Get("2015-12-14T00:00:00.0000000+00:00");
+            _ = await controller.Get("2015-12-14");
             Assert.AreEqual("http://pizzacabininc.azurewebsites.net/PizzaCabinInc.svc/schedule/2015-12-14", fakeHttpMessageHandler.Request.RequestUri.AbsoluteUri);
         }
 
@@ -43,7 +42,7 @@
                 });
             var controller = new SchedulesController(new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler)));
 
-            var actionResult = await controller.Get("2015-12-14T00:00:00.0000000+00:00");
+            var actionResult = await controller.Get("2015-12-14");
             Assert.IsInstanceOf<NotFoundObjectResult>(actionResult.Result);
             var notFound = (NotFoundObjectResult)actionResult.Result;
             Assert.AreEqual("No schedules found for selected date. Please try again.", notFound.Value);
@@ -62,7 +61,7 @@
                 });
             var controller = new SchedulesController(new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler)));
 
-            var actionResult = await controller.Get("2015-12-14T00:00:00.0000000+00:00");
+            var actionResult = await controller.Get("2015-12-14");
             var expected = @"{
   ""Start"": ""2015-12-14T08:00:00+00:00"",
   ""End"": ""2015-12-14T20:00:00+00:00"",
@@ -516,15 +515,15 @@
             Assert.AreEqual(expected, JsonConvert.SerializeObject(actionResult.Value, Formatting.Indented));
         }
 
-        [TestCase("2015-12-14T00:00:00.0000000+00:00", true)]
-        [TestCase("2015-12-14T00:00:00.0000000-01:00", true)]
-        [TestCase("2015-12-15T00:00:00.0000000+01:00", true)]
-        [TestCase("2015-12-14T00:00:00+00:00", true)]
-        [TestCase("2015-12-14T00:00:00-01:00", true)]
-        [TestCase("2015-12-15T00:00:00+01:00", true)]
-        [TestCase("2015-12-14T00:00:00.0000000Z", true)]
-        [TestCase("2015-12-14T00:00:00Z", true)]
         [TestCase("2015-12-14", true)]
+        [TestCase("2015-12-14T00:00:00.0000000+00:00", false)]
+        [TestCase("2015-12-14T00:00:00.0000000-01:00", false)]
+        [TestCase("2015-12-15T00:00:00.0000000+01:00", false)]
+        [TestCase("2015-12-14T00:00:00+00:00", false)]
+        [TestCase("2015-12-14T00:00:00-01:00", false)]
+        [TestCase("2015-12-15T00:00:00+01:00", false)]
+        [TestCase("2015-12-14T00:00:00.0000000Z", false)]
+        [TestCase("2015-12-14T00:00:00Z", false)]
         [TestCase("2015-12-14T00:00:00", false)]
         [TestCase("2015-12-14 00:00:00", false)]
         public async Task AcceptsOnlyIso8601(string date, bool success)
