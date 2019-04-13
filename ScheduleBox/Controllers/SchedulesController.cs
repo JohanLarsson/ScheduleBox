@@ -1,6 +1,7 @@
 namespace ScheduleBox.Controllers
 {
     using System;
+    using System.Globalization;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using ScheduleBox.Model;
@@ -16,12 +17,17 @@ namespace ScheduleBox.Controllers
             this.client = client;
         }
 
+        /// <summary>
+        /// Get schedules for selected date.
+        /// </summary>
+        /// <param name="dateString">The date formatted according to https://sv.wikipedia.org/wiki/ISO_8601.</param>
+        /// <returns>The schedules for selected date.</returns>
         [HttpGet("{dateString}")]
 #pragma warning disable MVC1004 // Rename model bound parameter. https://github.com/aspnet/AspNetCore/issues/6945
         public async Task<ActionResult<SchedulesResponse>> Get(string dateString)
 #pragma warning restore MVC1004 // Rename model bound parameter.
         {
-            if (DateTimeOffset.TryParse(dateString, out var date))
+            if (DateTimeOffset.TryParseExact(dateString, "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var date))
             {
                 var schedules = await this.client.GetSchedulesAsync(date);
                 if (schedules.Count == 0)
@@ -32,7 +38,7 @@ namespace ScheduleBox.Controllers
                 return new SchedulesResponse(schedules);
             }
 
-            return this.BadRequest("Expected a date. Please try again.");
+            return this.BadRequest("Expected a date in ISO 8601 format. Please try again.");
         }
     }
 }
