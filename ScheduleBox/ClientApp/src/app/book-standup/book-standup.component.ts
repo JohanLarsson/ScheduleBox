@@ -14,9 +14,9 @@ export class BookStandupComponent implements OnInit, OnDestroy {
   private navigateSubscription: any;
 
   constructor(
+    public scheduleService: ScheduleService,
     private route: ActivatedRoute,
-    private router: Router,
-    public scheduleService: ScheduleService
+    private router: Router
   ) { }
 
 
