@@ -535,6 +535,7 @@
             var actionResult = await controller.Get(date);
             if (success)
             {
+                Assert.AreEqual("http://pizzacabininc.azurewebsites.net/PizzaCabinInc.svc/schedule/2015-12-14", fakeHttpMessageHandler.Request.RequestUri.AbsoluteUri);
                 Assert.IsInstanceOf<ActionResult<SchedulesResponse>>(actionResult);
             }
             else
