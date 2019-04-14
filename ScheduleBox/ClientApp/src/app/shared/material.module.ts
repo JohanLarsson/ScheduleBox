@@ -15,6 +15,7 @@ import {
   MatCardModule,
   MatCheckboxModule,
   MatChipsModule,
+  MAT_DATE_LOCALE,
   MatDatepickerModule,
   MatDialogModule,
   MatDividerModule,
@@ -88,6 +89,9 @@ import {
     MatTreeModule,
     PortalModule,
     ScrollingModule,
-  ]
+  ],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'sv-SE'}
+  ],
 })
 export class MaterialModule {}
