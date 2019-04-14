@@ -22,6 +22,11 @@ $label-width: 150px;
       margin: 0 1px;
     }
 
+    > li:hover {
+      transform-origin: center bottom;
+      transform: scale(1.02);
+    }
+
     .too-few {
       background-color: rgba(200, 200, 200, 0.3);
     }
