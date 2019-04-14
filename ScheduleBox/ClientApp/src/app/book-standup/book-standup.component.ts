@@ -29,7 +29,7 @@ export class BookStandupComponent implements OnInit, OnDestroy {
 
     this.attendeesQueryParameterSubcription = this.route.queryParamMap
       .pipe(
-        map(x => x.get('attendees')),
+        map(x => x.get('minAttendees')),
         distinctUntilChanged())
       .subscribe(x => this.scheduleService.minAttendees = x ? +x : null);
 
@@ -38,7 +38,7 @@ export class BookStandupComponent implements OnInit, OnDestroy {
         map(x => x === null ? null : x.toString()),
         filter(x => x !== null)),
       this.scheduleService.minAttendeesObservable)
-      .subscribe(x => this.router.navigate([`/book-standup/${x[0]}`], { queryParams: { attendees: x[1] } }));
+      .subscribe(x => this.router.navigate([`/book-standup/${x[0]}`], { queryParams: { minAttendees: x[1] } }));
   }
 
   ngOnDestroy() {
