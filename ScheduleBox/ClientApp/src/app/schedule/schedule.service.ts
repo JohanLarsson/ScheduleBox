@@ -53,6 +53,7 @@ export class ScheduleService {
       .subscribe(date => {
         this._response.next(null);
         this.slots = [];
+        this.selectedSlot = null;
         if (date === null) {
           this.error = 'Invalid date.';
         } else {
@@ -64,7 +65,7 @@ export class ScheduleService {
                 this.slots = Array.from(
                   this.slotTimes(response),
                   x => Slot.create(x[0], x[1], response.schedules));
-                this.selectedSlot = this.slots.find(x => x.attendees.length > this._minAttendees.value);
+                this.selectedSlot = this.findSlot();
                 this._response.next(response);
               },
               error => this.error = error.error);
@@ -112,5 +113,9 @@ export class ScheduleService {
       yield [start, next];
       start = next;
     }
+  }
+
+  private findSlot(): Slot {
+    return this.slots.find(x => x.attendees.length > this._minAttendees.value);
   }
 }
