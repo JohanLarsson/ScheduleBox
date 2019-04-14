@@ -14,6 +14,7 @@
       <ul class="chart__row chart__columns-12-hours">
         <li class="chart__row--label">{{schedule.person.name}}</li>
         <li class="chart__row--box" *ngFor="let activity of schedule.activities"
+          matTooltip="{{activity.value.description}}"
           [style.grid-column-start]="activity.startColumn" [style.grid-column-end]="activity.endColumn"
           [style.background]="activity.value.color"></li>
       </ul>
