@@ -27,6 +27,11 @@ export class Day {
   }
 
   public toString(): string {
-    return `${this.year}-${(this.month + 1).toString().padStart(2, '0')}-${(this.date).toString().padStart(2, '0')}`;
+    return `${this.year}-${this._2digits(this.month + 1)}-${this._2digits(this.date)}`;
+  }
+
+  private _2digits(n: number): string {
+    // padStart(2, '0') not supported on IE
+    return ('00' + n).slice(-2);
   }
 }
