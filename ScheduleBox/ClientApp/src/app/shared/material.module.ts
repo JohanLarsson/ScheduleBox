@@ -43,7 +43,10 @@ import {
   MatToolbarModule,
   MatTooltipModule,
   MatTreeModule,
+  DateAdapter,
+  NativeDateAdapter,
 } from '@angular/material';
+import { LocalDateAdapter } from './LocalDateAdapter';
 
 @NgModule({
   exports: [
@@ -91,7 +94,8 @@ import {
     ScrollingModule,
   ],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'sv-SE'}
+    { provide: DateAdapter, useClass: LocalDateAdapter },
+    NativeDateAdapter,
   ],
 })
 export class MaterialModule {}

@@ -11,13 +11,13 @@ import { LocalDate } from './LocalDate';
 export class ScheduleService {
   error: string | null;
   private readonly _response = new BehaviorSubject<SchedulesResponse>(null);
-  private readonly _date = new BehaviorSubject<Date | null>(null);
+  private readonly _date = new BehaviorSubject<LocalDate | null>(null);
   private readonly _attendees = new BehaviorSubject<number | null>(null);
 
   constructor(http: HttpClient
   ) {
     this._date.pipe(
-      map(x => x === null ? null : LocalDate.format(x)),
+      map(x => x === null ? null : x.toString()),
       distinctUntilChanged())
       .subscribe(date => {
         this._response.next(null);
@@ -35,15 +35,15 @@ export class ScheduleService {
       });
   }
 
-  public get date(): Date | null {
+  public get date(): LocalDate | null {
     return this._date.value;
   }
 
-  public set date(v: Date) {
-    this._date.next(isNaN(v.getMilliseconds()) ? null : v);
+  public set date(v: LocalDate) {
+    this._date.next(v);
   }
 
-  public get dateObservable(): Observable<Date | null> {
+  public get dateObservable(): Observable<LocalDate | null> {
     return this._date.pipe(distinctUntilChanged());
   }
 

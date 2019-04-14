@@ -20,24 +20,14 @@ export class BookStandupComponent implements OnInit, OnDestroy {
     private router: Router
   ) { }
 
-
-  public get date(): Date {
-    return this.scheduleService.date;
-  }
-
-  public set date(v: Date) {
-    console.log(`datepicker: ${v}`);
-    this.scheduleService.date = v;
-  }
-
   ngOnInit(): void {
     this.dateParameterSubcription = this.route.paramMap
       .pipe(
-        map(x => new Date(x.get('date'))),
+        map(x => x.get('date')),
         distinctUntilChanged())
       .subscribe(date => {
         console.log(`url: ${date}`);
-        this.scheduleService.date = date;
+        this.scheduleService.date = LocalDate.parse(date);
       });
 
     this.attendeesQueryParameterSubcription = this.route.queryParamMap
@@ -48,7 +38,7 @@ export class BookStandupComponent implements OnInit, OnDestroy {
 
     this.navigateSubscription = combineLatest(
       this.scheduleService.dateObservable.pipe(
-        map(x => x === null ? null : LocalDate.format(x)),
+        map(x => x === null ? null : x.toString()),
         filter(x => x !== null)),
       this.scheduleService.attendeesObservable)
       .subscribe(x => this.router.navigate([`/book-standup/${x[0]}`], { queryParams: { attendees: x[1] } }));
