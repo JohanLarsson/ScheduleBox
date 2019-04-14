@@ -26,7 +26,7 @@
                 return true;
             }
 
-            date = default;
+            date = default(UtcDate);
             return false;
         }
 
