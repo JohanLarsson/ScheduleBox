@@ -25,7 +25,7 @@
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="32px" fxFill>
       <mat-card *ngIf="scheduleService.selectedSlot">
           <mat-card-header>
-            <mat-card-title>Meeting</mat-card-title>
+            <mat-card-title>Standup candidate</mat-card-title>
             <mat-card-subtitle>
               {{scheduleService.selectedSlot.start.toLocaleTimeString()}}-{{scheduleService.selectedSlot.end.toLocaleTimeString()}}
             </mat-card-subtitle>
