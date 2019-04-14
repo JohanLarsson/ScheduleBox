@@ -9,6 +9,9 @@
 
     <mat-form-field>
         <input type="number" matInput placeholder="Minimum attendees" min="1" required="false" [(ngModel)]="scheduleService.attendees">
+        <button mat-button *ngIf="scheduleService.attendees" matSuffix mat-icon-button aria-label="Clear" (click)="scheduleService.attendees=''">
+          <mat-icon>close</mat-icon>
+        </button>
     </mat-form-field>
 
     <app-chart *ngIf="scheduleService.response"></app-chart>
