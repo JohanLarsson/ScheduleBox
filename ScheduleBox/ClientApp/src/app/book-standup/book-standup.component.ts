@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { ScheduleService } from '../schedule/schedule.service';
 import { combineLatest } from 'rxjs';
-import { LocalDate } from '../schedule/LocalDate';
+import { Day } from '../schedule/Day';
 
 @Component({
   templateUrl: './book-standup.component.html',
@@ -25,7 +25,7 @@ export class BookStandupComponent implements OnInit, OnDestroy {
       .pipe(
         map(x => x.get('date')),
         distinctUntilChanged())
-      .subscribe(date => this.scheduleService.date = LocalDate.parse(date));
+      .subscribe(date => this.scheduleService.date = Day.parse(date));
 
     this.attendeesQueryParameterSubcription = this.route.queryParamMap
       .pipe(

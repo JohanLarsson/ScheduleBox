@@ -46,7 +46,7 @@ import {
   DateAdapter,
   NativeDateAdapter,
 } from '@angular/material';
-import { LocalDateAdapter } from './LocalDateAdapter';
+import { DayAdapter } from "./DayAdapter";
 
 @NgModule({
   exports: [
@@ -94,7 +94,7 @@ import { LocalDateAdapter } from './LocalDateAdapter';
     ScrollingModule,
   ],
   providers: [
-    { provide: DateAdapter, useClass: LocalDateAdapter },
+    { provide: DateAdapter, useClass: DayAdapter },
     NativeDateAdapter,
   ],
 })

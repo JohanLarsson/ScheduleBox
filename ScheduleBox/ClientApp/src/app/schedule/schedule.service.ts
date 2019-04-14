@@ -3,7 +3,7 @@ import { SchedulesResponse } from './SchedulesResponse';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { LocalDate } from './LocalDate';
+import { Day } from './Day';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ import { LocalDate } from './LocalDate';
 export class ScheduleService {
   error: string | null;
   private readonly _response = new BehaviorSubject<SchedulesResponse>(null);
-  private readonly _date = new BehaviorSubject<LocalDate | null>(null);
+  private readonly _date = new BehaviorSubject<Day | null>(null);
   private readonly _attendees = new BehaviorSubject<number | null>(null);
 
   constructor(http: HttpClient
@@ -34,15 +34,15 @@ export class ScheduleService {
       });
   }
 
-  public get date(): LocalDate | null {
+  public get date(): Day | null {
     return this._date.value;
   }
 
-  public set date(v: LocalDate) {
+  public set date(v: Day) {
     this._date.next(v);
   }
 
-  public get dateObservable(): Observable<LocalDate | null> {
+  public get dateObservable(): Observable<Day | null> {
     return this._date.pipe(distinctUntilChanged());
   }
 
