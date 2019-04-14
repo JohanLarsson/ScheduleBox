@@ -25,7 +25,6 @@ export class ScheduleService {
           this.error = 'Invalid date.';
         } else {
           this.error = null;
-          console.log(`fetch: ${date}`);
           http
             .get<SchedulesResponse>(`${document.getElementsByTagName('base')[0].href}api/schedules/${date}`)
             .subscribe(
