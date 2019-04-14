@@ -1,10 +1,8 @@
 namespace ScheduleBox.Controllers
 {
-    using System;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using ScheduleBox.Model;
-    using ScheduleBox.Model.PizzaCabinApiResponse;
 
     [Route("api/schedules")]
     public class SchedulesController : Controller
@@ -16,18 +14,28 @@ namespace ScheduleBox.Controllers
             this.client = client;
         }
 
-        [HttpGet("{date:datetime}")]
-#pragma warning disable MVC1004 // Rename model bound parameter. https://github.com/aspnet/AspNetCore/issues/6945
-        public async Task<ActionResult<SchedulesResponse>> Get(DateTime date)
-#pragma warning restore MVC1004 // Rename model bound parameter.
+        /// <summary>
+        /// Get schedules for selected date.
+        /// </summary>
+        /// <param name="dateString">
+        /// The UTC date formatted yyyy-MM-dd.
+        /// </param>
+        /// <returns>The schedules for selected date.</returns>
+        [HttpGet("{dateString}")]
+        public async Task<ActionResult<SchedulesResponse>> Get(string dateString)
         {
-            var schedules = await this.client.GetSchedulesAsync(date);
-            if (schedules.Count == 0)
+            if (UtcDate.TryParse(dateString, out var date))
             {
-                return this.NotFound("No schedules found for selected date. Please try again.");
+                var schedules = await this.client.GetSchedulesAsync(date);
+                if (schedules.Count == 0)
+                {
+                    return this.NotFound("No schedules found for selected date. Please try again.");
+                }
+
+                return new SchedulesResponse(schedules);
             }
 
-            return new SchedulesResponse(schedules);
+            return this.BadRequest("Expected a date in ISO 8601 format. Please try again.");
         }
     }
 }

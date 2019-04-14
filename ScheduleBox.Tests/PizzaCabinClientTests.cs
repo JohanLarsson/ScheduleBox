@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using Newtonsoft.Json;
     using NUnit.Framework;
-    using ScheduleBox.Model.PizzaCabinApiResponse;
+    using ScheduleBox.Model;
 
     public class PizzaCabinClientTests
     {
@@ -24,7 +24,7 @@
                 });
             var client = new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler));
 
-            _ = await client.GetSchedulesAsync(new DateTime(2015, 12, 14));
+            _ = await client.GetSchedulesAsync(new UtcDate(new DateTime(2015, 12, 14, 0, 0, 0, DateTimeKind.Utc)));
             Assert.AreEqual("http://pizzacabininc.azurewebsites.net/PizzaCabinInc.svc/schedule/2015-12-14", fakeHttpMessageHandler.Request.RequestUri.AbsoluteUri);
         }
 
@@ -41,7 +41,7 @@
                 });
             var client = new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler));
 
-            var schedules = await client.GetSchedulesAsync(new DateTimeOffset(2015, 12, 14, 0, 0, 0, TimeSpan.Zero));
+            var schedules = await client.GetSchedulesAsync(new UtcDate(new DateTime(2015, 12, 14, 0, 0, 0, DateTimeKind.Utc)));
             Assert.AreEqual(0, schedules.Count);
         }
 
@@ -58,7 +58,7 @@
                 });
             var client = new PizzaCabinClient(new HttpClient(fakeHttpMessageHandler));
 
-            var schedules = await client.GetSchedulesAsync(new DateTimeOffset(2015, 12, 14, 0, 0, 0, TimeSpan.Zero));
+            var schedules = await client.GetSchedulesAsync(new UtcDate(new DateTime(2015, 12, 14, 0, 0, 0, DateTimeKind.Utc)));
             var expected = @"[
   {
     ""Person"": {

@@ -1,8 +1,7 @@
-﻿namespace ScheduleBox.Model.PizzaCabinApiResponse
+﻿namespace ScheduleBox.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -17,9 +16,9 @@
             this.httpClient = httpClient;
         }
 
-        public async Task<IReadOnlyList<DaySchedule>> GetSchedulesAsync(DateTimeOffset date)
+        public async Task<IReadOnlyList<DaySchedule>> GetSchedulesAsync(UtcDate date)
         {
-            var json = await this.httpClient.GetStringAsync($"http://pizzacabininc.azurewebsites.net/PizzaCabinInc.svc/schedule/{date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}").ConfigureAwait(false);
+            var json = await this.httpClient.GetStringAsync($"http://pizzacabininc.azurewebsites.net/PizzaCabinInc.svc/schedule/{date}").ConfigureAwait(false);
             var response = JsonConvert.DeserializeObject<ScheduleResponse>(json);
             if (response.ScheduleResult?.Schedules == null)
             {

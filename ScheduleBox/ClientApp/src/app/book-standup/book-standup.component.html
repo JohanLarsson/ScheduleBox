@@ -1,12 +1,49 @@
-<h1>Find a standup time</h1>
-<div>
-    <label for="date">Select date</label>
-    <input type="date" [(ngModel)]="date" name="date">
-    <div *ngIf="scheduleService.error">{{scheduleService.error}}</div>
-</div>
-<div>
-    <label for="attendees">Min attendees</label>
-    <input type="number" [(ngModel)]="attendees" min="1" name="attendees">
-</div>
+<mat-card>
+  <div>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" required
+             placeholder="Choose a date"
+             [(ngModel)]="scheduleService.date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
 
-<app-chart *ngIf="scheduleService.response"></app-chart>
+    <br />
+
+    <mat-form-field>
+      <input type="number" matInput placeholder="Minimum attendees" min="1" required="false"
+             [(ngModel)]="scheduleService.minAttendees">
+      <button mat-button matSuffix mat-icon-button
+              aria-label="Clear"
+              *ngIf="scheduleService.minAttendees"
+              (click)="scheduleService.minAttendees=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="32px" fxFill>
+      <mat-card *ngIf="scheduleService.selectedSlot">
+          <mat-card-header>
+            <mat-card-title>Standup candidate</mat-card-title>
+            <mat-card-subtitle>
+              {{scheduleService.selectedSlot.start.toLocaleTimeString()}}-{{scheduleService.selectedSlot.end.toLocaleTimeString()}}
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content >
+            <span>Attendees:</span>
+            <mat-list dense>
+              <mat-list-item *ngFor="let attendee of scheduleService.selectedSlot.attendees">{{attendee.person.name}}
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-button color="primary">BOOK!</button>
+          </mat-card-actions>
+        </mat-card>
+
+        <app-chart *ngIf="scheduleService.response" fxFlex></app-chart>
+  </div>
+
+</mat-card>
