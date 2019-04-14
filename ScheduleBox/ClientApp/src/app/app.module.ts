@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { BookStandupComponent } from './book-standup/book-standup.component';
 import { ChartComponent } from './chart/chart.component';
 import { MaterialModule } from './shared/material.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { MaterialModule } from './shared/material.module';
     HttpClientModule,
     FormsModule,
     MaterialModule,
+    FlexLayoutModule,
   ],
   providers: [ ],
   bootstrap: [AppComponent]
