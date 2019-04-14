@@ -1,22 +1,28 @@
 <mat-card>
-    <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="scheduleService.date" required>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="picker" required
+           placeholder="Choose a date"
+           [(ngModel)]="scheduleService.date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
 
-    <br />
+  <br />
 
-    <mat-form-field>
-        <input type="number" matInput placeholder="Minimum attendees" min="1" required="false" [(ngModel)]="scheduleService.minAttendees">
-        <button mat-button *ngIf="scheduleService.minAttendees" matSuffix mat-icon-button aria-label="Clear" (click)="scheduleService.minAttendees=''">
-          <mat-icon>close</mat-icon>
-        </button>
-    </mat-form-field>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Minimum attendees" min="1" required="false"
+           [(ngModel)]="scheduleService.minAttendees">
+    <button mat-button matSuffix mat-icon-button
+            aria-label="Clear"
+            *ngIf="scheduleService.minAttendees"
+            (click)="scheduleService.minAttendees=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
 
-    <mat-card>
-      <div>{{scheduleService.selectedSlot.start}}</div>
-    </mat-card>
+  <mat-card>
+    <div>{{scheduleService.selectedSlot.start}}</div>
+  </mat-card>
 
-    <app-chart *ngIf="scheduleService.response"></app-chart>
+  <app-chart *ngIf="scheduleService.response"></app-chart>
 </mat-card>
