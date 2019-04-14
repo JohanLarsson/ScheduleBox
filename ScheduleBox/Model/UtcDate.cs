@@ -20,9 +20,9 @@
 
         public static bool TryParse(string text, out UtcDate date)
         {
-            if (DateTimeOffset.TryParseExact(text, Format, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal, out var offset))
+            if (DateTime.TryParseExact(text, Format, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal, out var dateTime))
             {
-                date = new UtcDate(offset.UtcDateTime);
+                date = new UtcDate(DateTime.SpecifyKind(dateTime, DateTimeKind.Utc));
                 return true;
             }
 
