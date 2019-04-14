@@ -35,7 +35,7 @@ $label-width: 150px;
       list-style-type: none;
     }
   }
-  
+
   &__rows {
     margin: 0;
     padding: 0;
@@ -54,7 +54,7 @@ $label-width: 150px;
   }
 
   &__lines {
-    pointer-events: none;  
+    pointer-events: none;
     grid-row: 2 / 4;
     grid-column: 1;
     > span {

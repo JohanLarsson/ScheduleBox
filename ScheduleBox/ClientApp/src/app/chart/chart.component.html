@@ -1,7 +1,10 @@
 <div class="chart">
   <ul class="chart__row chart__columns chart__columns-12-hours">
-    <li *ngFor="let slot of slots" [style.grid-column-start]="slot.startColumn" [style.height.rem]="slot.value.attendees.length"
-      [class.too-few]="slot.value.attendees.length < scheduleService.minAttendees"></li>
+    <li *ngFor="let slot of slots" (click)="scheduleService.select(slot.value)"
+      [style.grid-column-start]="slot.startColumn" [style.height.rem]="slot.value.attendees.length"
+      [class.too-few]="slot.value.attendees.length < scheduleService.minAttendees"
+      [class.selected]="slot.value === scheduleService.selectedSlot">
+    </li>
   </ul>
 
   <ul class="chart__row chart__headers chart__columns-12-hours">
@@ -14,9 +17,8 @@
       <ul class="chart__row chart__columns-12-hours">
         <li class="chart__row--label">{{schedule.person.name}}</li>
         <li class="chart__row--box" *ngFor="let activity of schedule.activities"
-          matTooltip="{{activity.value.description}}"
-          [style.grid-column-start]="activity.startColumn" [style.grid-column-end]="activity.endColumn"
-          [style.background]="activity.value.color"></li>
+          matTooltip="{{activity.value.description}}" [style.grid-column-start]="activity.startColumn"
+          [style.grid-column-end]="activity.endColumn" [style.background]="activity.value.color"></li>
       </ul>
     </li>
   </ul>

@@ -30,7 +30,7 @@ export class Slot {
 
     function isAvailable(activity: Activity): boolean {
       return activity.description !== 'Lunch' &&
-             activity.description !== 'Short break';
+        activity.description !== 'Short break';
     }
   }
 }
@@ -41,6 +41,7 @@ export class Slot {
 export class ScheduleService {
   error: string | null;
   slots: Slot[];
+  selectedSlot: Slot | null;
   private readonly _response = new BehaviorSubject<SchedulesResponse>(null);
   private readonly _date = new BehaviorSubject<Day | null>(null);
   private readonly _minAttendees = new BehaviorSubject<number | null>(null);
@@ -63,6 +64,7 @@ export class ScheduleService {
                 this.slots = Array.from(
                   this.slotTimes(response),
                   x => Slot.create(x[0], x[1], response.schedules));
+                this.selectedSlot = this.slots.find(x => x.attendees.length > this._minAttendees.value);
                 this._response.next(response);
               },
               error => this.error = error.error);
@@ -96,6 +98,10 @@ export class ScheduleService {
 
   public get response(): Observable<SchedulesResponse> {
     return this._response.asObservable();
+  }
+
+  public select(slot: Slot): void {
+    this.selectedSlot = slot;
   }
 
   private *slotTimes(response: SchedulesResponse) {

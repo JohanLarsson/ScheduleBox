@@ -14,5 +14,9 @@
         </button>
     </mat-form-field>
 
+    <mat-card>
+      <div>{{scheduleService.selectedSlot.start}}</div>
+    </mat-card>
+
     <app-chart *ngIf="scheduleService.response"></app-chart>
 </mat-card>
