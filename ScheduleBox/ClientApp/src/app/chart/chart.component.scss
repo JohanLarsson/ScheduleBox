@@ -22,8 +22,12 @@ $label-width: 150px;
     align-items: end;
     > li {
       list-style-type: none;
-      background: rgb(203, 255, 201);
+      background-color: rgba(63, 81, 181, 0.3);
       margin: 0 1px;
+    }
+
+    .selected {
+      background-color: rgba(63, 81, 181, 1);
     }
   }
 
