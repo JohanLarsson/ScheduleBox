@@ -3,6 +3,7 @@ import { SchedulesResponse } from './SchedulesResponse';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
+import { LocalDate } from './LocalDate';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class ScheduleService {
   constructor(http: HttpClient
   ) {
     this._date.pipe(
-      map(x => x === null ? null : x.toISOString()),
+      map(x => x === null ? null : LocalDate.format(x)),
       distinctUntilChanged())
       .subscribe(date => {
         this._response.next(null);

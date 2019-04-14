@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { ScheduleService } from '../schedule/schedule.service';
 import { combineLatest } from 'rxjs';
+import { LocalDate } from '../schedule/LocalDate';
 
 @Component({
   templateUrl: './book-standup.component.html',
@@ -32,7 +33,7 @@ export class BookStandupComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.dateParameterSubcription = this.route.paramMap
       .pipe(
-        map(paramMap => new Date(paramMap.get('date'))),
+        map(x => new Date(x.get('date'))),
         distinctUntilChanged())
       .subscribe(date => {
         console.log(`url: ${date}`);
@@ -41,16 +42,16 @@ export class BookStandupComponent implements OnInit, OnDestroy {
 
     this.attendeesQueryParameterSubcription = this.route.queryParamMap
       .pipe(
-        map(paramMap => paramMap.get('attendees')),
+        map(x => x.get('attendees')),
         distinctUntilChanged())
       .subscribe(x => this.scheduleService.attendees = x ? +x : null);
 
     this.navigateSubscription = combineLatest(
-      this.scheduleService.dateObservable.pipe(filter(x => x !== null)),
+      this.scheduleService.dateObservable.pipe(
+        map(x => x === null ? null : LocalDate.format(x)),
+        filter(x => x !== null)),
       this.scheduleService.attendeesObservable)
-      .subscribe(x => this.router.navigate(
-        [`/book-standup/${x[0].getFullYear()}-${x[0].getMonth() + 1}-${x[0].getDate()}`],
-        { queryParams: { attendees: x[1] } }));
+      .subscribe(x => this.router.navigate([`/book-standup/${x[0]}`], { queryParams: { attendees: x[1] } }));
   }
 
   ngOnDestroy() {
