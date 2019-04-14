@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Day } from './Day';
+import { _MatTabHeaderMixinBase } from '@angular/material/tabs/typings/tab-header';
 
 export class PersonAndActivity {
   constructor(
@@ -65,7 +66,7 @@ export class ScheduleService {
                 this.slots = Array.from(
                   this.slotTimes(response),
                   x => Slot.create(x[0], x[1], response.schedules));
-                this.selectedSlot = this.findSlot();
+                this.selectedSlot = this.findSlot(this.slots);
                 this._response.next(response);
               },
               error => this.error = error.error);
@@ -90,6 +91,17 @@ export class ScheduleService {
   }
 
   public set minAttendees(v: number | null) {
+    if (v !== null &&
+      this.selectedSlot !== null &&
+      this.selectedSlot.attendees.length < v) {
+      this.selectedSlot = null;
+    }
+
+    if (this.selectedSlot === null &&
+      this.slots !== null) {
+      this.selectedSlot = this.findSlot(this.slots);
+    }
+
     this._minAttendees.next(v);
   }
 
@@ -115,7 +127,22 @@ export class ScheduleService {
     }
   }
 
-  private findSlot(): Slot {
-    return this.slots.find(x => x.attendees.length > this._minAttendees.value);
+  private findSlot(slots: Slot[]): Slot {
+    let max = null;
+    for (const slot of slots) {
+      if (max == null) {
+        max = slot;
+      }
+      else if (slot.attendees.length > max.attendees.length) {
+        max = slot;
+      }
+    }
+
+    if (this._minAttendees.value !== null &&
+      max.attendees.length < this._minAttendees.value) {
+      return null;
+    }
+
+    return max;
   }
 }
