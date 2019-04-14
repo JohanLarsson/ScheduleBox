@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SchedulesResponse, Activity, Person } from '../schedule/SchedulesResponse';
-import { ScheduleService } from '../schedule/schedule.service';
+import { ScheduleService, Slot } from '../schedule/schedule.service';
 
 function* range(start: number, end: number) {
   for (let i = start; i <= end; i++) {
@@ -63,15 +63,15 @@ export class DaySchedule {
 export class ChartComponent implements OnInit, OnDestroy {
   headers: Range<string>[];
   schedules: DaySchedule[] = [];
-  slots: Range<Person[]>[] = [];
+  slots: Range<Slot>[] = [];
   bounds: Bounds;
   private subscription: any;
 
-  constructor(public sceduleService: ScheduleService) {
+  constructor(public scheduleService: ScheduleService) {
   }
 
   ngOnInit(): void {
-    this.subscription = this.sceduleService.response.subscribe(
+    this.subscription = this.scheduleService.response.subscribe(
       response => {
         if (response == null) {
           this.bounds = null;
@@ -102,15 +102,11 @@ export class ChartComponent implements OnInit, OnDestroy {
                 a))));
 
         this.slots = Array.from(
-          range(this.bounds.startColumn, this.bounds.endColumn - 1),
-          x => new Range<Person[]>(
-            x,
-            x,
-            this.schedules.filter(s => s.activities.some(a => a.startColumn <= x &&
-              a.endColumn > x &&
-              a.value.description !== 'Lunch' &&
-              a.value.description !== 'Short break'))
-              .map(s => s.person)));
+          this.scheduleService.slots,
+          x => new Range<Slot>(
+            this.bounds.getStartColumn(x.start),
+            this.bounds.getEndColumn(x.end),
+            x));
       });
   }
 

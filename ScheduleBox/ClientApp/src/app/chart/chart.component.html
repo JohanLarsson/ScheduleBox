@@ -1,7 +1,7 @@
 <div class="chart">
   <ul class="chart__row chart__columns chart__columns-12-hours">
-    <li *ngFor="let slot of slots" [style.grid-column-start]="slot.startColumn" [style.height.rem]="slot.value.length"
-      [class.too-few]="slot.value.length < sceduleService.attendees"></li>
+    <li *ngFor="let slot of slots" [style.grid-column-start]="slot.startColumn" [style.height.rem]="slot.value.attendees.length"
+      [class.too-few]="slot.value.attendees.length < scheduleService.attendees"></li>
   </ul>
 
   <ul class="chart__row chart__headers chart__columns-12-hours">
