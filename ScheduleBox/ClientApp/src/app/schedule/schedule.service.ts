@@ -83,7 +83,7 @@ export class ScheduleService {
   }
 
   public get dateObservable(): Observable<Day | null> {
-    return this._date.pipe(distinctUntilChanged());
+    return this._date.pipe(distinctUntilChanged((x, y) =>  JSON.stringify(x) === JSON.stringify(y)));
   }
 
   public get minAttendees(): number | null {
