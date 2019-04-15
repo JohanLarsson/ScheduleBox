@@ -13,6 +13,11 @@
     "noImplicitAny": true,
     "strict": true,
     "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "alwaysStrict": true,
+    "noFallthroughCasesInSwitch": true,
     "target": "es5",
     "typeRoots": [
       "node_modules/@types"
