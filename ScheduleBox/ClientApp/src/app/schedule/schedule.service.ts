@@ -40,10 +40,10 @@ export class Slot {
   providedIn: 'root'
 })
 export class ScheduleService {
-  error: string | null;
-  slots: Slot[];
-  selectedSlot: Slot | null;
-  private readonly _response = new BehaviorSubject<SchedulesResponse>(null);
+  error: string | null = null;
+  slots: Slot[] = [];
+  selectedSlot: Slot | null = null;
+  private readonly _response = new BehaviorSubject<SchedulesResponse | null>(null);
   private readonly _date = new BehaviorSubject<Day | null>(null);
   private readonly _minAttendees = new BehaviorSubject<number | null>(null);
 
@@ -78,7 +78,7 @@ export class ScheduleService {
     return this._date.value;
   }
 
-  public set date(v: Day) {
+  public set date(v: Day | null) {
     this._date.next(v);
   }
 
@@ -109,7 +109,7 @@ export class ScheduleService {
     return this._minAttendees.pipe(distinctUntilChanged());
   }
 
-  public get response(): Observable<SchedulesResponse> {
+  public get response(): Observable<SchedulesResponse | null> {
     return this._response.asObservable();
   }
 
@@ -127,7 +127,7 @@ export class ScheduleService {
     }
   }
 
-  private findSlot(slots: Slot[]): Slot {
+  private findSlot(slots: Slot[]): Slot | null {
     let max = null;
     for (const slot of slots) {
       if (max == null) {
@@ -138,8 +138,9 @@ export class ScheduleService {
       }
     }
 
-    if (this._minAttendees.value !== null &&
-      max.attendees.length < this._minAttendees.value) {
+    if (max !== null &&
+        this._minAttendees.value !== null &&
+        max.attendees.length < this._minAttendees.value) {
       return null;
     }
 

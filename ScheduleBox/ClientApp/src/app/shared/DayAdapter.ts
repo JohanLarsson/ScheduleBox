@@ -66,7 +66,9 @@ export class DayAdapter extends DateAdapter<Day> {
     if (value && typeof value === 'string') {
       return Day.parse(value);
     }
-    return Day.ofDate(this.native.parse(value));
+
+    const date = this.native.parse(value);
+    return date === null ? null : Day.ofDate(date);
   }
 
   format(date: Day, displayFormat: string): string {

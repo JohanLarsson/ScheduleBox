@@ -8,10 +8,9 @@ export class Day {
     return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
   }
 
-  public static parse(s: string): Day {
-    const regex = /^(\d\d\d\d)-(\d\d)-(\d\d)$/;
-    if (regex.test(s)) {
-      const matches = regex.exec(s);
+  public static parse(s: string): Day | null {
+    var matches = /^(\d\d\d\d)-(\d\d)-(\d\d)$/.exec(s);
+    if (matches) {
       return new Day(+matches[1], +matches[2] - 1, +matches[3]);
     }
 

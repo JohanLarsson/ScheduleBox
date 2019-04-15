@@ -61,10 +61,10 @@ export class DaySchedule {
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnInit, OnDestroy {
-  headers: Range<string>[];
+  headers: Range<string>[] = [];
   schedules: DaySchedule[] = [];
   slots: Range<Slot>[] = [];
-  bounds: Bounds;
+  bounds: Bounds | null= null;
   private subscription: any;
 
   constructor(public scheduleService: ScheduleService) {
@@ -81,11 +81,12 @@ export class ChartComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.bounds = new Bounds(new Date(response.start), new Date(response.end));
+        const bounds = new Bounds(new Date(response.start), new Date(response.end));
+        this.bounds = bounds;
         this.headers = Array.from(
           range(this.bounds.start.getHours(), this.bounds.end.getHours() - 1),
           x => {
-            const start = this.bounds.getColumnFromHours(x);
+            const start = bounds.getColumnFromHours(x);
             return new Range<string>(start, start + 4, `${x}:00`);
           }
         );
@@ -97,15 +98,15 @@ export class ChartComponent implements OnInit, OnDestroy {
             Array.from(
               x.activities,
               a => new Range<Activity>(
-                this.bounds.getStartColumn(new Date(a.start)),
-                this.bounds.getEndColumn(new Date(a.end)),
+                bounds.getStartColumn(new Date(a.start)),
+                bounds.getEndColumn(new Date(a.end)),
                 a))));
 
         this.slots = Array.from(
           this.scheduleService.slots,
           x => new Range<Slot>(
-            this.bounds.getStartColumn(x.start),
-            this.bounds.getEndColumn(x.end),
+            bounds.getStartColumn(x.start),
+            bounds.getEndColumn(x.end),
             x));
       });
   }

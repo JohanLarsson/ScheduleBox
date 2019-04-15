@@ -25,7 +25,7 @@ export class BookStandupComponent implements OnInit, OnDestroy {
       .pipe(
         map(x => x.get('date')),
         distinctUntilChanged())
-      .subscribe(date => this.scheduleService.date = Day.parse(date));
+      .subscribe(date => this.scheduleService.date = date === null ? null : Day.parse(date));
 
     this.attendeesQueryParameterSubcription = this.route.queryParamMap
       .pipe(
