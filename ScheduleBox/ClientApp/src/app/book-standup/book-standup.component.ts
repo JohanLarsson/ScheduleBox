@@ -31,13 +31,13 @@ export class BookStandupComponent implements OnInit, OnDestroy {
       .pipe(
         map(x => x.get('minAttendees')),
         distinctUntilChanged())
-      .subscribe(x => this.scheduleService.minAttendees = x ? +x : null);
+      .subscribe(x => this.scheduleService.minAttendees.next(x ? parseInt(x) : null));
 
     this.navigateSubscription = combineLatest(
       this.scheduleService.dateObservable.pipe(
         map(x => x === null ? null : x.toString()),
         filter(x => x !== null)),
-      this.scheduleService.minAttendeesObservable)
+      this.scheduleService.minAttendees)
       .subscribe(x => this.router.navigate([`/book-standup/${x[0]}`], { queryParams: { minAttendees: x[1] } }));
   }
 

@@ -43,9 +43,10 @@ export class ScheduleService {
   error: string | null = null;
   slots: Slot[] = [];
   selectedSlot: Slot | null = null;
+  readonly minAttendees = new BehaviorSubject<number | null>(null);
+
   private readonly _response = new BehaviorSubject<SchedulesResponse | null>(null);
   private readonly _date = new BehaviorSubject<Day | null>(null);
-  private readonly _minAttendees = new BehaviorSubject<number | null>(null);
 
   constructor(http: HttpClient) {
     this._date.pipe(
@@ -72,6 +73,19 @@ export class ScheduleService {
               error => this.error = error.error);
         }
       });
+
+    this.minAttendees.subscribe(x => {
+      if (x !== null &&
+        this.selectedSlot !== null &&
+        this.selectedSlot.attendees.length < x) {
+        this.selectedSlot = null;
+      }
+
+      if (this.selectedSlot === null &&
+        this.slots !== null) {
+        this.selectedSlot = this.findSlot(this.slots);
+      }
+    });
   }
 
   public get date(): Day | null {
@@ -83,30 +97,7 @@ export class ScheduleService {
   }
 
   public get dateObservable(): Observable<Day | null> {
-    return this._date.pipe(distinctUntilChanged((x, y) =>  JSON.stringify(x) === JSON.stringify(y)));
-  }
-
-  public get minAttendees(): number | null {
-    return this._minAttendees.value;
-  }
-
-  public set minAttendees(v: number | null) {
-    if (v !== null &&
-      this.selectedSlot !== null &&
-      this.selectedSlot.attendees.length < v) {
-      this.selectedSlot = null;
-    }
-
-    if (this.selectedSlot === null &&
-      this.slots !== null) {
-      this.selectedSlot = this.findSlot(this.slots);
-    }
-
-    this._minAttendees.next(v);
-  }
-
-  public get minAttendeesObservable(): Observable<number | null> {
-    return this._minAttendees.pipe(distinctUntilChanged());
+    return this._date.pipe(distinctUntilChanged((x, y) => JSON.stringify(x) === JSON.stringify(y)));
   }
 
   public get response(): Observable<SchedulesResponse | null> {
@@ -139,8 +130,8 @@ export class ScheduleService {
     }
 
     if (max !== null &&
-        this._minAttendees.value !== null &&
-        max.attendees.length < this._minAttendees.value) {
+      this.minAttendees.value !== null &&
+      max.attendees.length < this.minAttendees.value) {
       return null;
     }
 

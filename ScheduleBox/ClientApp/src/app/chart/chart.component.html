@@ -4,7 +4,7 @@
         (click)="scheduleService.select(slot.value)"
         [style.grid-column-start]="slot.startColumn"
         [style.height.rem]="slot.value.attendees.length"
-        [class.too-few]="slot.value.attendees.length < scheduleService.minAttendees"
+        [class.too-few]="slot.value.attendees.length < scheduleService.minAttendees.value"
         [class.selected]="slot.value === scheduleService.selectedSlot">
     </li>
   </ul>
