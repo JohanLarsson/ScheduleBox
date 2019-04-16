@@ -12,10 +12,10 @@
 
     <mat-form-field>
       <input type="number" matInput placeholder="Minimum attendees" min="1" required="false"
-             [ngModel]="scheduleService.minAttendees.value" (ngModelChange)="scheduleService.minAttendees.next($event)">
+             [ngModel]="scheduleService.minAttendees | async" (ngModelChange)="scheduleService.minAttendees.next($event)">
       <button mat-button matSuffix mat-icon-button
               aria-label="Clear"
-              *ngIf="scheduleService.minAttendees.value"
+              *ngIf="scheduleService.minAttendees | async"
               (click)="scheduleService.minAttendees.next(null)">
         <mat-icon>close</mat-icon>
       </button>
